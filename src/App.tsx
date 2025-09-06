@@ -1,46 +1,74 @@
+import React, { useState, useCallback } from 'react';
+import { NumberInput } from './components/NumberInput.tsx';
+
+// Default configuration constants
+const DEFAULTS = {
+  WORK_MINUTES: 25,
+  BREAK_MINUTES: 5,
+  SESSIONS_BEFORE_LONG_BREAK: 4,
+  LONG_BREAK_MINUTES: 30,
+} as const;
+
 export function App() {
+  const [workMinutes, setWorkMinutes] = useState<number>(DEFAULTS.WORK_MINUTES);
+  const [breakMinutes, setBreakMinutes] = useState<number>(DEFAULTS.BREAK_MINUTES);
+  const [sessionsBeforeLongBreak, setSessionsBeforeLongBreak] = useState<number>(
+    DEFAULTS.SESSIONS_BEFORE_LONG_BREAK
+  );
+  const [longBreakMinutes, setLongBreakMinutes] = useState<number>(DEFAULTS.LONG_BREAK_MINUTES);
+  const [log, setLog] = useState<Array<{ time: string; message: string }>>([]);
+
+  const timestamp = () => new Date().toISOString();
+
+  const resetConfig = useCallback(() => {
+    setWorkMinutes(DEFAULTS.WORK_MINUTES);
+    setBreakMinutes(DEFAULTS.BREAK_MINUTES);
+    setSessionsBeforeLongBreak(DEFAULTS.SESSIONS_BEFORE_LONG_BREAK);
+    setLongBreakMinutes(DEFAULTS.LONG_BREAK_MINUTES);
+    setLog((l) => [{ time: timestamp(), message: 'Configuration reset to defaults.' }, ...l]);
+  }, []);
+
   return (
     <div className="app">
       <h1>Pomo PWA</h1>
 
       <section>
+        {/* TODO: disable configuration inputs and buttons, except for reset, when a session is active */}
         <h2>Configuration</h2>
+        <NumberInput
+          id="workMinutes"
+          label="Work Session (minutes):"
+          value={workMinutes}
+          onChange={setWorkMinutes}
+          min={1}
+          placeholder={DEFAULTS.WORK_MINUTES}
+        />
+        <NumberInput
+          id="breakMinutes"
+          label="Break Session (minutes):"
+          value={breakMinutes}
+          onChange={setBreakMinutes}
+          min={1}
+          placeholder={DEFAULTS.BREAK_MINUTES}
+        />
+        <NumberInput
+          id="sessionsBeforeLongBreak"
+          label="Work Sessions Before Long Break:"
+          value={sessionsBeforeLongBreak}
+          onChange={setSessionsBeforeLongBreak}
+          min={1}
+          placeholder={DEFAULTS.SESSIONS_BEFORE_LONG_BREAK}
+        />
+        <NumberInput
+          id="longBreakMinutes"
+          label="Long Break (minutes):"
+          value={longBreakMinutes}
+          onChange={setLongBreakMinutes}
+          min={1}
+          placeholder={DEFAULTS.LONG_BREAK_MINUTES}
+        />
         <div>
-          {/* how long each work session lasts */}
-          <label htmlFor="duration">Set Work Session Duration (minutes): </label>
-          <input type="number" name="duration" id="duration" value={25} placeholder="25" />
-        </div>
-        <div>
-          {/* how many minutes the break session is after a work session */}
-          <label htmlFor="break">Set Break Session Duration (minutes): </label>
-          <input type="number" name="break" id="break" value={5} placeholder="5" />
-        </div>
-        <div>
-          {/* how many work sessions before a long break session is taken */}
-          <label htmlFor="sessionsBeforeLongBreak">
-            Set Work Sessions Before Long Break Session:{' '}
-          </label>
-          <input
-            type="number"
-            name="sessionsBeforeLongBreak"
-            id="sessionsBeforeLongBreak"
-            value={4}
-            placeholder="4"
-          />
-        </div>
-        <div>
-          {/* how many minutes the long break session lasts */}
-          <label htmlFor="longBreak">Set Long Break Session Duration (minutes): </label>
-          <input type="number" name="longBreak" id="longBreak" value={30} placeholder="30" />
-        </div>
-        <div>
-          <button
-            type="button"
-            onClick={() => {
-              // TODO: implement - this should reset the configuration values to their defaults
-              throw new Error('not implemented');
-            }}
-          >
+          <button type="button" onClick={resetConfig}>
             Reset to defaults
           </button>
         </div>
@@ -50,12 +78,11 @@ export function App() {
         <button
           type="button"
           onClick={() => {
-            // TODO: implement
-            // this should start the next session based on the current state of the pomo app
-            // if any of the configuration values have changed, it should use the new configuration values for the next session and the change should be logged
-            // there are several session types: work session, break session, long break session
-            // this should also log the event that the session has started with a timestamp and a short description of the session type that has started
-            throw new Error('not implemented');
+            // TODO: implement start session logic
+            setLog((l) => [
+              { time: timestamp(), message: 'Started session (not yet implemented).' },
+              ...l,
+            ]);
           }}
         >
           Go
@@ -63,10 +90,8 @@ export function App() {
         <button
           type="button"
           onClick={() => {
-            // TODO: implement
-            // this should reset the timer and all state to the current configuration values
-            // this should also clear the log of events that have been recorded so far
-            throw new Error('not implemented');
+            // TODO: implement full reset
+            setLog((l) => [{ time: timestamp(), message: 'Reset (not yet implemented).' }, ...l]);
           }}
         >
           Reset
@@ -74,10 +99,13 @@ export function App() {
       </section>
 
       <section>
-        {/* TODO: list the events with the timestamp that they happen in and a short description of the event. */}
         <h2>Log</h2>
         <ul>
-          <li>[timestamp of event]: Event description</li>
+          {log.map((entry, i) => (
+            <li key={i}>
+              [{entry.time}]: {entry.message}
+            </li>
+          ))}
         </ul>
       </section>
     </div>
