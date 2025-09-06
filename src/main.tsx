@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
-import './style.css';
+import './style.scss';
 
 if ('serviceWorker' in navigator) {
   // Optional extra manual registration (vite-plugin-pwa also injects one if auto)
