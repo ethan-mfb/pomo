@@ -179,7 +179,6 @@ export function App() {
       <h1>Pomo PWA</h1>
 
       <section>
-        {/* configuration inputs disable while a session runs */}
         <h2>Configuration</h2>
         <NumberInput
           id="workMinutes"
@@ -188,7 +187,7 @@ export function App() {
           onChange={setWorkMinutes}
           min={1}
           placeholder={DEFAULTS.WORK_MINUTES}
-          disabled={!!session?.inProgress}
+          disabled={session?.inProgress === true}
         />
         <NumberInput
           id="breakMinutes"
@@ -197,7 +196,7 @@ export function App() {
           onChange={setBreakMinutes}
           min={1}
           placeholder={DEFAULTS.BREAK_MINUTES}
-          disabled={!!session?.inProgress}
+          disabled={session?.inProgress === true}
         />
         <NumberInput
           id="sessionsBeforeLongBreak"
@@ -206,7 +205,7 @@ export function App() {
           onChange={setSessionsBeforeLongBreak}
           min={1}
           placeholder={DEFAULTS.SESSIONS_BEFORE_LONG_BREAK}
-          disabled={!!session?.inProgress}
+          disabled={session?.inProgress === true}
         />
         <NumberInput
           id="longBreakMinutes"
@@ -215,7 +214,7 @@ export function App() {
           onChange={setLongBreakMinutes}
           min={1}
           placeholder={DEFAULTS.LONG_BREAK_MINUTES}
-          disabled={!!session?.inProgress}
+          disabled={session?.inProgress === true}
         />
         <div>
           <button type="button" onClick={resetConfig}>
@@ -225,7 +224,7 @@ export function App() {
       </section>
 
       <section>
-        <button type="button" onClick={startNextSession} disabled={!!session?.inProgress}>
+        <button type="button" onClick={startNextSession} disabled={session?.inProgress === true}>
           {session?.inProgress ? 'Running…' : 'Go'}
         </button>
         <button type="button" onClick={fullReset}>
