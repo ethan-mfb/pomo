@@ -6,6 +6,7 @@ export type NumberInputProps = {
   min?: number;
   max?: number;
   placeholder?: string | number;
+  disabled?: boolean;
 };
 
 export function NumberInput(args: NumberInputProps) {
@@ -21,6 +22,7 @@ export function NumberInput(args: NumberInputProps) {
         min={args.min}
         max={args.max}
         placeholder={args.placeholder?.toString()}
+        disabled={args.disabled}
       />
     </div>
   );
