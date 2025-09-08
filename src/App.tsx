@@ -13,19 +13,19 @@ const DEFAULTS = {
 } as const;
 
 type SessionType = 'work' | 'break' | 'long_break';
-interface SessionState {
+type SessionState = {
   type: SessionType;
   startedAt: number; // epoch ms
   durationMs: number;
   endsAt: number;
   remainingMs: number;
   inProgress: boolean;
-}
-interface LogEntry {
+};
+type LogEntry = {
   time: string;
   message: string;
   level?: 'info' | 'warn' | 'error';
-}
+};
 
 export function App() {
   const [workMinutes, setWorkMinutes] = useState<number>(DEFAULTS.WORK_MINUTES);
@@ -105,7 +105,7 @@ export function App() {
     [workMinutes, breakMinutes, longBreakMinutes]
   );
 
-  const startNextSession = useCallback(() => {
+  const startNextSession = () => {
     if (session?.inProgress) {
       logMessage('Session already in progress.', 'warn');
       return;
@@ -133,7 +133,7 @@ export function App() {
     setSession(newSession);
     logMessage(`Started ${type.replace('_', ' ')} session (${durationMin} min).`);
     prevConfigRef.current = currentConfig;
-  }, [session, logMessage, decideNextType, durationForType, snapshotConfig]);
+  };
 
   // ticking effect
   useEffect(() => {
@@ -224,16 +224,29 @@ export function App() {
       </section>
 
       <section>
-        <button type="button" onClick={startNextSession} disabled={session?.inProgress === true}>
-          {session?.inProgress ? 'Running…' : 'Go'}
-        </button>
-        <button type="button" onClick={fullReset}>
-          Reset
-        </button>
-      </section>
-
-      <section>
         <h2>Current Session</h2>
+        <div>
+          <button type="button" onClick={startNextSession} disabled={session?.inProgress === true}>
+            {session?.inProgress ? 'Running…' : 'Go'}
+          </button>
+        </div>
+        {session?.inProgress === true && (
+          <div>
+            <button
+              type="button"
+              onClick={() => {
+                throw new Error('TODO: implement');
+              }}
+            >
+              Pause
+            </button>
+          </div>
+        )}
+        <div>
+          <button type="button" onClick={fullReset}>
+            Reset
+          </button>
+        </div>
         {session ? (
           <div>
             <p>
