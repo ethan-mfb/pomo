@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MILLISECONDS_IN_SECOND } from '../constants.ts';
 
-export function useTimer(): {
+export function useTimer(args: { onFinish: () => void }): {
   /** `null` when the timer is not running. */
   timeRemaining: number | null;
   /** `true` when the timer is running and `false` otherwise. */
@@ -14,6 +14,7 @@ export function useTimer(): {
   const [timerFinished, setTimerFinished] = useState(false);
   const isRunning = timeRemaining !== null && timeRemaining > 0;
 
+  const { onFinish } = args;
   useEffect(() => {
     let interval: number | null = null;
 
@@ -25,6 +26,7 @@ export function useTimer(): {
     } else if (timeRemaining === 0) {
       setTimeRemaining(null);
       setTimerFinished(true);
+      onFinish();
     }
 
     return () => {
@@ -32,7 +34,7 @@ export function useTimer(): {
         clearInterval(interval);
       }
     };
-  }, [isRunning, timeRemaining]);
+  }, [onFinish, isRunning, timeRemaining]);
 
   const startTimer = (durationInSeconds: number) => {
     setTimeRemaining(durationInSeconds);

@@ -8,34 +8,23 @@ export function App() {
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
-  const [isAlarmDismissed, setIsAlarmDismissed] = useState(true);
-  const { timeRemaining, isRunning, timerFinished, startTimer } = useTimer();
-  const { playAlarm, dismissAlarm } = useAlarm();
-
-  useEffect(
-    function playAlarmOnTimerFinish() {
-      if (timeRemaining === 0) {
-        playAlarm();
-      }
-    },
-    [timeRemaining, playAlarm]
-  );
+  const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm();
+  const { timeRemaining, isRunning, timerFinished, startTimer } = useTimer({
+    onFinish: playAlarm,
+  });
 
   const onStartWorkSession = () => {
-    setIsAlarmDismissed(false);
     const totalSeconds = workSessionDurationMinutes * SECONDS_IN_MINUTE;
     dismissAlarm();
     startTimer(totalSeconds);
   };
-
   const onDismissAlarm = () => {
     dismissAlarm();
-    setIsAlarmDismissed(true);
   };
 
   return (
     <div className="app">
-      {timerFinished && !isAlarmDismissed && (
+      {timerFinished && isAlarmActive && (
         <div>
           <p>Take 5!</p>
           <button onClick={onDismissAlarm}>Dismiss Alarm</button>
@@ -66,10 +55,12 @@ export function App() {
 }
 
 function useAlarm(): {
+  isAlarmActive: boolean;
   playAlarm: () => void;
   dismissAlarm: () => void;
 } {
   const audio = useRef<HTMLAudioElement | null>(null);
+  const [isAlarmActive, setIsAlarmActive] = useState(false);
 
   const playAlarm = useCallback(() => {
     // Initialize audio if needed
@@ -79,24 +70,27 @@ function useAlarm(): {
       audio.current.loop = false;
     }
 
+    setIsAlarmActive(true);
     audio.current.play().catch(console.error);
   }, []);
 
   const dismissAlarm = useCallback(() => {
     if (audio.current !== null) {
       audio.current.pause();
+      setIsAlarmActive(false);
       audio.current.currentTime = 0;
     }
   }, []);
 
-  // Cleanup on unmount
-  useEffect(() => {
-    return () => {
-      dismissAlarm();
-    };
-  }, [dismissAlarm]);
+  useEffect(
+    function dismissAlarmOnUnmount() {
+      return dismissAlarm;
+    },
+    [dismissAlarm]
+  );
 
   return {
+    isAlarmActive,
     playAlarm,
     dismissAlarm,
   };
