@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { NumberInput } from './components/NumberInput.tsx';
 import { DEFAULT_WORK_SESSION_DURATION_MINUTES, SECONDS_IN_MINUTE } from './constants.ts';
 import { formatTime } from './utils.ts';
@@ -8,28 +8,37 @@ export function App() {
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
-  const [alarmDismissed, setAlarmDismissed] = useState(false);
+  const [isAlarmDismissed, setIsAlarmDismissed] = useState(true);
   const { timeRemaining, isRunning, timerFinished, startTimer } = useTimer();
+  const { playAlarm, dismissAlarm } = useAlarm();
 
-  // Play alarm when timer finishes and hasn't been dismissed
-  usePlayAlarm(timeRemaining === 0 || (timerFinished && !alarmDismissed));
+  useEffect(
+    function playAlarmOnTimerFinish() {
+      if (timeRemaining === 0) {
+        playAlarm();
+      }
+    },
+    [timeRemaining, playAlarm]
+  );
 
-  const handleStart = () => {
+  const onStartWorkSession = () => {
+    setIsAlarmDismissed(false);
     const totalSeconds = workSessionDurationMinutes * SECONDS_IN_MINUTE;
-    setAlarmDismissed(false); // Reset alarm dismissed state
+    dismissAlarm();
     startTimer(totalSeconds);
   };
 
-  const handleDismissAlarm = () => {
-    setAlarmDismissed(true);
+  const onDismissAlarm = () => {
+    dismissAlarm();
+    setIsAlarmDismissed(true);
   };
 
   return (
     <div className="app">
-      {timerFinished && (
+      {timerFinished && !isAlarmDismissed && (
         <div>
           <p>Take 5!</p>
-          {!alarmDismissed && <button onClick={handleDismissAlarm}>Dismiss Alarm</button>}
+          <button onClick={onDismissAlarm}>Dismiss Alarm</button>
         </div>
       )}
 
@@ -42,7 +51,7 @@ export function App() {
             placeholder={DEFAULT_WORK_SESSION_DURATION_MINUTES}
             onChange={setWorkSessionDurationMinutes}
           />
-          <button onClick={handleStart}>Go!</button>
+          <button onClick={onStartWorkSession}>Go!</button>
         </div>
       )}
 
@@ -56,25 +65,39 @@ export function App() {
   );
 }
 
-function usePlayAlarm(playAlarm: boolean): void {
+function useAlarm(): {
+  playAlarm: () => void;
+  dismissAlarm: () => void;
+} {
   const audio = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    if (playAlarm) {
-      if (audio.current === null) {
-        audio.current = new Audio('/alarm.mp3');
-        audio.current.volume = 1.0;
-        audio.current.loop = false;
-      }
-
-      audio.current.play().catch(console.error);
+  const playAlarm = useCallback(() => {
+    // Initialize audio if needed
+    if (audio.current === null) {
+      audio.current = new Audio('/alarm.mp3');
+      audio.current.volume = 1.0;
+      audio.current.loop = false;
     }
 
+    audio.current.play().catch(console.error);
+  }, []);
+
+  const dismissAlarm = useCallback(() => {
+    if (audio.current !== null) {
+      audio.current.pause();
+      audio.current.currentTime = 0;
+    }
+  }, []);
+
+  // Cleanup on unmount
+  useEffect(() => {
     return () => {
-      if (audio.current !== null) {
-        audio.current.pause();
-        audio.current.currentTime = 0;
-      }
+      dismissAlarm();
     };
-  }, [audio, playAlarm]);
+  }, [dismissAlarm]);
+
+  return {
+    playAlarm,
+    dismissAlarm,
+  };
 }
