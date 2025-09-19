@@ -9,16 +9,9 @@ export function App() {
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
-  const { timeRemaining, isRunning, startTimer } = useTimer();
-
-  // Play alarm when timer finishes
-  useEffect(() => {
-    if (timeRemaining === 0) {
-      const audio = new Audio('/alarm.mp3');
-      audio.volume = 1.0;
-      audio.play().catch(console.error);
-    }
-  }, [timeRemaining]);
+  const { timeRemaining, isRunning, timerFinished, startTimer } = useTimer();
+  // not using `timerFinished` here because `timeRemaining` is only `0` for one render
+  usePlayAlarm(timeRemaining === 0);
 
   const handleStart = () => {
     const totalSeconds = workSessionDurationMinutes * SECONDS_IN_MINUTE;
@@ -27,41 +20,66 @@ export function App() {
 
   return (
     <div className="app">
-      <NumberInput
-        id="work-duration"
-        label="Work Session Duration (minutes):"
-        value={workSessionDurationMinutes}
-        placeholder="25"
-        onChange={setWorkSessionDurationMinutes}
-      />
+      {timerFinished && <p>Take 5 !</p>}
 
-      {timeRemaining !== null && (
-        <div className="timer-display">
-          <h2>{formatTime(timeRemaining)}</h2>
-          <p>{isRunning ? 'Timer running...' : 'Timer finished!'}</p>
+      {!isRunning && (
+        <div>
+          <NumberInput
+            id="work-duration"
+            label="Work Session Duration (minutes):"
+            value={workSessionDurationMinutes}
+            placeholder="25"
+            onChange={setWorkSessionDurationMinutes}
+          />
+          <button onClick={handleStart}>Go!</button>
         </div>
       )}
 
-      <button onClick={handleStart} disabled={isRunning}>
-        {isRunning ? 'Running...' : 'Start'}
-      </button>
+      {timeRemaining !== null && (
+        <div>
+          <p>Get to work!</p>
+          <h2>{formatTime(timeRemaining)}</h2>
+        </div>
+      )}
     </div>
   );
 }
 
-function useTimer() {
+function usePlayAlarm(playAlarm: boolean): void {
+  // Play alarm when timer finishes
+  useEffect(() => {
+    if (playAlarm) {
+      const audio = new Audio('/alarm.mp3');
+      audio.volume = 1.0;
+      audio.play().catch(console.error);
+    }
+  }, [playAlarm]);
+}
+
+function useTimer(): {
+  /** `null` when the timer is not running. */
+  timeRemaining: number | null;
+  /** `true` when the timer is running and `false` otherwise. */
+  isRunning: boolean;
+  /** `true` when the timer has finished and `false` otherwise. This will remain `true` until the timer starts again. */
+  timerFinished: boolean;
+  startTimer: (durationInSeconds: number) => void;
+} {
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [timerFinished, setTimerFinished] = useState(false);
   const isRunning = timeRemaining !== null && timeRemaining > 0;
 
   useEffect(() => {
     let interval: number | null = null;
 
     if (isRunning && timeRemaining !== null && timeRemaining > 0) {
+      setTimerFinished(false);
       interval = setInterval(() => {
         setTimeRemaining((prev) => (prev !== null ? prev - 1 : null));
       }, MILLISECONDS_IN_SECOND);
     } else if (timeRemaining === 0) {
       setTimeRemaining(null);
+      setTimerFinished(true);
     }
 
     return () => {
@@ -78,6 +96,7 @@ function useTimer() {
   return {
     timeRemaining,
     isRunning,
+    timerFinished,
     startTimer,
   };
 }
