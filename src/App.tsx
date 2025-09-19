@@ -52,6 +52,12 @@ function useTimer() {
         setTimeRemaining((prev) => (prev !== null ? prev - 1 : null));
       }, MILLISECONDS_IN_SECOND);
     } else if (timeRemaining === 0) {
+      // Play sound when timer finishes
+      const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhGjOJ0u/NdigFKHzN7t2KOwgadLrm7aZWGw==');
+      audio.play().catch(() => {
+        // Fallback: use system beep if audio fails
+        console.log('Timer finished!');
+      });
       setTimeRemaining(null);
     }
 
