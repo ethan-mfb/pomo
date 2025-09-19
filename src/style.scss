@@ -1,12 +1,11 @@
-$bg: #0f172a;
+$pomo-primary: #183059;
+$pomo-secondary: #fadf63;
 $fg: #f1f5f9;
-$code-bg: #1e293b;
-$accent: #facc15;
 
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: $bg;
+  background: $pomo-primary;
   color: $fg;
 }
 
@@ -17,12 +16,5 @@ body {
 
   h1 {
     margin-top: 0;
-  }
-
-  code {
-    background: $code-bg;
-    padding: 2px 4px;
-    border-radius: 4px;
-    color: $accent;
   }
 }
