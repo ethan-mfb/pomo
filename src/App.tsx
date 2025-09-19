@@ -9,18 +9,30 @@ export function App() {
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
+  const [alarmDismissed, setAlarmDismissed] = useState(false);
   const { timeRemaining, isRunning, timerFinished, startTimer } = useTimer();
-  // not using `timerFinished` here because `timeRemaining` is only `0` for one render
-  usePlayAlarm(timeRemaining === 0);
+
+  // Play alarm when timer finishes and hasn't been dismissed
+  usePlayAlarm(timeRemaining === 0 || (timerFinished && !alarmDismissed));
 
   const handleStart = () => {
     const totalSeconds = workSessionDurationMinutes * SECONDS_IN_MINUTE;
+    setAlarmDismissed(false); // Reset alarm dismissed state
     startTimer(totalSeconds);
+  };
+
+  const handleDismissAlarm = () => {
+    setAlarmDismissed(true);
   };
 
   return (
     <div className="app">
-      {timerFinished && <p>Take 5 !</p>}
+      {timerFinished && (
+        <div>
+          <p>Take 5 !</p>
+          {!alarmDismissed && <button onClick={handleDismissAlarm}>Dismiss Alarm</button>}
+        </div>
+      )}
 
       {!isRunning && (
         <div>
@@ -46,13 +58,26 @@ export function App() {
 }
 
 function usePlayAlarm(playAlarm: boolean): void {
-  // Play alarm when timer finishes
   useEffect(() => {
+    let audio: HTMLAudioElement | null = null;
+
     if (playAlarm) {
-      const audio = new Audio('/alarm.mp3');
+      audio = new Audio('/alarm.mp3');
       audio.volume = 1.0;
-      audio.play().catch(console.error);
+      audio.loop = false; // Don't use built-in loop to have more control
+
+      if (audio) {
+        audio.currentTime = 0; // Reset to beginning
+        audio.play().catch(console.error);
+      }
     }
+
+    return () => {
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+    };
   }, [playAlarm]);
 }
 
