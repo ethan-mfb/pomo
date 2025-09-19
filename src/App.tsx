@@ -9,36 +9,11 @@ export function App() {
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
-  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
-  const isRunning = timeRemaining !== null && timeRemaining > 0;
-
-  useEffect(() => {
-    let interval: number | null = null;
-
-    if (isRunning && timeRemaining !== null && timeRemaining > 0) {
-      interval = setInterval(() => {
-        setTimeRemaining((prev) => (prev !== null ? prev - 1 : null));
-      }, MILLISECONDS_IN_SECOND);
-    } else if (timeRemaining === 0) {
-      setTimeRemaining(null);
-    }
-
-    return () => {
-      if (interval) {
-        clearInterval(interval);
-      }
-    };
-  }, [isRunning, timeRemaining]);
-
-  const formatTime = (seconds: number) => {
-    const minutes = Math.floor(seconds / SECONDS_IN_MINUTE);
-    const remainingSeconds = seconds % SECONDS_IN_MINUTE;
-    return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
-  };
+  const { timeRemaining, isRunning, startTimer } = useTimer();
 
   const handleStart = () => {
     const totalSeconds = workSessionDurationMinutes * SECONDS_IN_MINUTE;
-    setTimeRemaining(totalSeconds);
+    startTimer(totalSeconds);
   };
 
   return (
@@ -63,4 +38,43 @@ export function App() {
       </button>
     </div>
   );
+}
+
+function useTimer() {
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const isRunning = timeRemaining !== null && timeRemaining > 0;
+
+  useEffect(() => {
+    let interval: number | null = null;
+
+    if (isRunning && timeRemaining !== null && timeRemaining > 0) {
+      interval = setInterval(() => {
+        setTimeRemaining((prev) => (prev !== null ? prev - 1 : null));
+      }, MILLISECONDS_IN_SECOND);
+    } else if (timeRemaining === 0) {
+      setTimeRemaining(null);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, [isRunning, timeRemaining]);
+
+  const startTimer = (durationInSeconds: number) => {
+    setTimeRemaining(durationInSeconds);
+  };
+
+  return {
+    timeRemaining,
+    isRunning,
+    startTimer,
+  };
+}
+
+function formatTime(seconds: number): string {
+  const minutes = Math.floor(seconds / SECONDS_IN_MINUTE);
+  const remainingSeconds = seconds % SECONDS_IN_MINUTE;
+  return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
 }
