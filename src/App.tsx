@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { NumberInput } from './components/NumberInput.tsx';
+import { ProgressBar } from './components/ProgressBar.tsx';
 import { DEFAULT_WORK_SESSION_DURATION_MINUTES, SECONDS_IN_MINUTE } from './constants.ts';
 import { formatTime } from './utils.ts';
 import { useTimer } from './hooks/useTimer.ts';
@@ -8,6 +9,7 @@ export function App() {
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
+  const [totalDuration, setTotalDuration] = useState(0);
   const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm();
   const { timeRemaining, isRunning, timerFinished, startTimer } = useTimer({
     onFinish: playAlarm,
@@ -17,6 +19,7 @@ export function App() {
   const onStartWorkSession = () => {
     setHasBeenDismissed(false);
     const totalSeconds = workSessionDurationMinutes * SECONDS_IN_MINUTE;
+    setTotalDuration(totalSeconds);
     dismissAlarm();
     startTimer(totalSeconds);
   };
@@ -48,9 +51,9 @@ export function App() {
       )}
 
       {timeRemaining !== null && (
-        <div>
-          <p>Get to work!</p>
-          <h2>{formatTime(timeRemaining)}</h2>
+        <div className="timer-display">
+          <ProgressBar timeRemaining={timeRemaining} totalDuration={totalDuration} />
+          <h2 className="timer-display-countdown">{formatTime(timeRemaining)}</h2>
         </div>
       )}
     </div>
