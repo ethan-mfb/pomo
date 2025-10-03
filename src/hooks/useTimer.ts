@@ -11,6 +11,7 @@ export function useTimer(args: { onFinish: () => void }): {
   startTimer: (durationInSeconds: number) => void;
   pauseTimer: () => void;
   resumeTimer: () => void;
+  cancelTimer: () => void;
   isPaused: boolean;
 } {
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
@@ -53,6 +54,12 @@ export function useTimer(args: { onFinish: () => void }): {
     setIsPaused(false);
   };
 
+  const cancelTimer = () => {
+    setTimeRemaining(null);
+    setIsPaused(false);
+    setTimerFinished(false);
+  };
+
   return {
     timeRemaining,
     isRunning,
@@ -60,6 +67,7 @@ export function useTimer(args: { onFinish: () => void }): {
     startTimer,
     pauseTimer,
     resumeTimer,
+    cancelTimer,
     isPaused,
   };
 }
