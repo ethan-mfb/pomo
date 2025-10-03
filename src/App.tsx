@@ -1,7 +1,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { NumberInput } from './components/NumberInput.tsx';
 import { ProgressBar } from './components/ProgressBar.tsx';
-import { DEFAULT_WORK_SESSION_DURATION_MINUTES, SECONDS_IN_MINUTE } from './constants.ts';
+import {
+  DEFAULT_WORK_SESSION_DURATION_MINUTES,
+  MILLISECONDS_IN_SECOND,
+  SECONDS_IN_MINUTE,
+} from './constants.ts';
 import { formatTime } from './utils.ts';
 import { useTimer } from './hooks/useTimer.ts';
 
@@ -10,6 +14,7 @@ export function App() {
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
   const [totalDuration, setTotalDuration] = useState(0);
+  const [endTime, setEndTime] = useState<Date | null>(null);
   const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm();
   const {
     timeRemaining,
@@ -29,6 +34,7 @@ export function App() {
     setHasBeenDismissed(false);
     const totalSeconds = workSessionDurationMinutes * SECONDS_IN_MINUTE;
     setTotalDuration(totalSeconds);
+    setEndTime(new Date(Date.now() + totalSeconds * MILLISECONDS_IN_SECOND));
     dismissAlarm();
     startTimer(totalSeconds);
   };
@@ -39,6 +45,7 @@ export function App() {
 
   const onCancelTimer = () => {
     cancelTimer();
+    setEndTime(null);
     setHasBeenDismissed(true);
   };
 
@@ -67,7 +74,14 @@ export function App() {
       {timeRemaining !== null && (
         <div className="timer-display">
           <ProgressBar timeRemaining={timeRemaining} totalDuration={totalDuration} />
-          <h2 className="timer-display-countdown">{formatTime(timeRemaining)}</h2>
+          <h2 className="timer-display-countdown">
+            {formatTime(timeRemaining)}
+            {endTime && (
+              <span className="timer-display-end-time">
+                {isPaused ? '--:--:-- --' : endTime.toLocaleTimeString()}
+              </span>
+            )}
+          </h2>
           <button onClick={isPaused ? resumeTimer : pauseTimer}>
             {isPaused ? 'Resume' : 'Pause'}
           </button>

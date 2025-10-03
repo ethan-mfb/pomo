@@ -1,6 +1,7 @@
 $pomo-primary: #183059;
 $pomo-secondary: #fadf63;
 $fg: #f1f5f9;
+$fg-muted: #c6ced9;
 
 body {
   margin: 0;
@@ -21,6 +22,11 @@ body {
     .timer-display-countdown {
       font-size: 2em;
       text-align: center;
+    }
+    .timer-display-end-time {
+      color: $fg-muted;
+      display: block;
+      font-size: 0.7em;
     }
   }
 }
