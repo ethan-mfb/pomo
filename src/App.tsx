@@ -11,9 +11,10 @@ export function App() {
   );
   const [totalDuration, setTotalDuration] = useState(0);
   const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm();
-  const { timeRemaining, isRunning, timerFinished, startTimer, pauseTimer, resumeTimer, isPaused } = useTimer({
-    onFinish: playAlarm,
-  });
+  const { timeRemaining, isRunning, timerFinished, startTimer, pauseTimer, resumeTimer, isPaused } =
+    useTimer({
+      onFinish: playAlarm,
+    });
   const [hasBeenDismissed, setHasBeenDismissed] = useState(true);
 
   const onStartWorkSession = () => {
@@ -53,8 +54,7 @@ export function App() {
       {timeRemaining !== null && (
         <div className="timer-display">
           <ProgressBar timeRemaining={timeRemaining} totalDuration={totalDuration} />
-          <p>Get to work!</p>
-          <h2>{formatTime(timeRemaining)}</h2>
+          <h2 className="timer-display-countdown">{formatTime(timeRemaining)}</h2>
           <button onClick={isPaused ? resumeTimer : pauseTimer}>
             {isPaused ? 'Resume' : 'Pause'}
           </button>
