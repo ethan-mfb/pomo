@@ -11,10 +11,18 @@ export function App() {
   );
   const [totalDuration, setTotalDuration] = useState(0);
   const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm();
-  const { timeRemaining, isRunning, timerFinished, startTimer, pauseTimer, resumeTimer, cancelTimer, isPaused } =
-    useTimer({
-      onFinish: playAlarm,
-    });
+  const {
+    timeRemaining,
+    isRunning,
+    timerFinished,
+    startTimer,
+    pauseTimer,
+    resumeTimer,
+    cancelTimer,
+    isPaused,
+  } = useTimer({
+    onFinish: playAlarm,
+  });
   const [hasBeenDismissed, setHasBeenDismissed] = useState(true);
 
   const onStartWorkSession = () => {
