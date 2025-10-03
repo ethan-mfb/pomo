@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { NumberInput } from './components/NumberInput.tsx';
 import { ProgressBar } from './components/ProgressBar.tsx';
+import { Button } from './components/Button.tsx';
 import {
   DEFAULT_WORK_SESSION_DURATION_MINUTES,
   MILLISECONDS_IN_SECOND,
@@ -55,7 +56,7 @@ export function App() {
       {timerFinished && isAlarmActive && (
         <div>
           <p>Take a break</p>
-          <button onClick={onDismissAlarm}>Dismiss Alarm</button>
+          <Button onClick={onDismissAlarm}>Dismiss Alarm</Button>
         </div>
       )}
 
@@ -68,7 +69,7 @@ export function App() {
             placeholder={DEFAULT_WORK_SESSION_DURATION_MINUTES}
             onChange={setWorkSessionDurationMinutes}
           />
-          <button onClick={onStartWorkSession}>Go!</button>
+          <Button onClick={onStartWorkSession}>Go!</Button>
         </div>
       )}
 
@@ -83,10 +84,10 @@ export function App() {
               </span>
             )}
           </h2>
-          <button onClick={isPaused ? resumeTimer : pauseTimer}>
+          <Button onClick={isPaused ? resumeTimer : pauseTimer}>
             {isPaused ? 'Resume' : 'Pause'}
-          </button>
-          <button onClick={onCancelTimer}>Cancel</button>
+          </Button>
+          <Button onClick={onCancelTimer}>Cancel</Button>
         </div>
       )}
     </div>
