@@ -1,28 +1,51 @@
 @use 'theme';
 
+:root {
+  --color-primary: #{theme.$dark-primary};
+  --color-secondary: #{theme.$dark-secondary};
+  --color-fg: #{theme.$dark-fg};
+  --color-fg-muted: #{theme.$dark-fg-muted};
+}
+
+body[data-theme='light'] {
+  --color-primary: #{theme.$light-primary};
+  --color-secondary: #{theme.$light-secondary};
+  --color-fg: #{theme.$light-fg};
+  --color-fg-muted: #{theme.$light-fg-muted};
+}
+
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: theme.$pomo-primary;
-  color: theme.$fg;
+  background: var(--color-primary);
+  color: var(--color-fg);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .app {
   padding: 2rem;
+  max-width: 640px;
   margin: 0 auto;
 
   h1 {
     margin-top: 0;
   }
+
   .timer-display {
     .timer-display-countdown {
       font-size: 2em;
       text-align: center;
     }
     .timer-display-end-time {
-      color: theme.$fg-muted;
+      color: var(--color-fg-muted);
       display: block;
       font-size: 0.7em;
     }
+  }
+
+  .theme-toggle {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
   }
 }
