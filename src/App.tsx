@@ -60,7 +60,7 @@ export function App() {
 
       {timerFinished && isAlarmActive && (
         <div>
-          <p>Take a break</p>
+          <h2>Take a break</h2>
           <Button onClick={onDismissAlarm}>Dismiss Alarm</Button>
         </div>
       )}
