@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { NumberInput } from './components/NumberInput.tsx';
 import { ProgressBar } from './components/ProgressBar.tsx';
 import { Button } from './components/Button.tsx';
@@ -12,12 +12,21 @@ import { useTimer } from './hooks/useTimer.ts';
 import { useAlarm } from './hooks/useAlarm.ts';
 
 export function App() {
+  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
   const [totalDuration, setTotalDuration] = useState(0);
   const [endTime, setEndTime] = useState<Date | null>(null);
   const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm();
+
+  useEffect(() => {
+    document.body.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
   const {
     timeRemaining,
     isRunning,
@@ -53,6 +62,12 @@ export function App() {
 
   return (
     <div className="app">
+      <div className="theme-toggle">
+        <Button onClick={toggleTheme}>
+          {theme === 'dark' ? '☀️' : '🌙'}
+        </Button>
+      </div>
+
       {timerFinished && isAlarmActive && (
         <div>
           <p>Take a break</p>
