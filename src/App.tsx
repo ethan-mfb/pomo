@@ -6,13 +6,15 @@ import {
   DEFAULT_WORK_SESSION_DURATION_MINUTES,
   MILLISECONDS_IN_SECOND,
   SECONDS_IN_MINUTE,
+  THEMES,
 } from './constants.ts';
 import { formatTime } from './utils.ts';
 import { useTimer } from './hooks/useTimer.ts';
 import { useAlarm } from './hooks/useAlarm.ts';
+import { Theme } from './types.ts';
 
 export function App() {
-  const [theme, setTheme] = useState<'dark' | 'light'>('dark');
+  const [theme, setTheme] = useState<Theme>(THEMES.DARK);
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
@@ -25,7 +27,7 @@ export function App() {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+    setTheme((prev) => (prev === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK));
   };
   const {
     timeRemaining,
@@ -64,7 +66,7 @@ export function App() {
     <div className="app">
       <div className="theme-toggle">
         <Button onClick={toggleTheme} className="theme-toggle-btn">
-          {theme === 'dark' ? '◐' : '◑'}
+          {theme === THEMES.DARK ? '◐' : '◑'}
         </Button>
       </div>
 
