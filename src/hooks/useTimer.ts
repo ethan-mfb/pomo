@@ -9,10 +9,14 @@ export function useTimer(args: { onFinish: () => void }): {
   /** `true` when the timer has finished and `false` otherwise. This will remain `true` until the timer starts again. */
   timerFinished: boolean;
   startTimer: (durationInSeconds: number) => void;
+  pauseTimer: () => void;
+  resumeTimer: () => void;
+  isPaused: boolean;
 } {
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [timerFinished, setTimerFinished] = useState(false);
-  const isRunning = timeRemaining !== null && timeRemaining > 0;
+  const [isPaused, setIsPaused] = useState(false);
+  const isRunning = timeRemaining !== null && timeRemaining > 0 && !isPaused;
 
   const { onFinish } = args;
   useEffect(() => {
@@ -38,6 +42,15 @@ export function useTimer(args: { onFinish: () => void }): {
 
   const startTimer = (durationInSeconds: number) => {
     setTimeRemaining(durationInSeconds);
+    setIsPaused(false);
+  };
+
+  const pauseTimer = () => {
+    setIsPaused(true);
+  };
+
+  const resumeTimer = () => {
+    setIsPaused(false);
   };
 
   return {
@@ -45,5 +58,8 @@ export function useTimer(args: { onFinish: () => void }): {
     isRunning,
     timerFinished,
     startTimer,
+    pauseTimer,
+    resumeTimer,
+    isPaused,
   };
 }
