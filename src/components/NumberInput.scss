@@ -25,8 +25,9 @@
 
     &:focus {
       outline: none;
-      border-color: var(--color-secondary);
+      border-color: var(--color-accent);
       background-color: color-mix(in srgb, var(--color-fg) 15%, transparent);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
     }
 
     &:hover {
