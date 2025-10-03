@@ -1,49 +1,26 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { NumberInput } from './components/NumberInput.tsx';
 import { ProgressBar } from './components/ProgressBar.tsx';
 import { Button } from './components/Button.tsx';
+import { ThemeToggle } from './components/ThemeToggle.tsx';
 import {
   DEFAULT_WORK_SESSION_DURATION_MINUTES,
   MILLISECONDS_IN_SECOND,
   SECONDS_IN_MINUTE,
-  THEMES,
 } from './constants.ts';
 import { formatTime } from './utils.ts';
 import { useTimer } from './hooks/useTimer.ts';
 import { useAlarm } from './hooks/useAlarm.ts';
-import { Theme } from './types.ts';
+import { useAppTheme } from './hooks/useAppTheme.ts';
 
 export function App() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
-      return THEMES.LIGHT;
-    }
-    return THEMES.DARK;
-  });
+  const { theme, toggleTheme } = useAppTheme();
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
   const [totalDuration, setTotalDuration] = useState(0);
   const [endTime, setEndTime] = useState<Date | null>(null);
   const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm();
-
-  useEffect(() => {
-    document.body.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: light)');
-    const handleChange = (e: MediaQueryListEvent) => {
-      setTheme(e.matches ? THEMES.LIGHT : THEMES.DARK);
-    };
-
-    mediaQuery.addEventListener('change', handleChange);
-    return () => mediaQuery.removeEventListener('change', handleChange);
-  }, []);
-
-  const toggleTheme = () => {
-    setTheme((prev) => (prev === THEMES.DARK ? THEMES.LIGHT : THEMES.DARK));
-  };
   const {
     timeRemaining,
     isRunning,
@@ -79,11 +56,7 @@ export function App() {
 
   return (
     <div className="app">
-      <div className="theme-toggle">
-        <Button onClick={toggleTheme} className="theme-toggle-btn">
-          {theme === THEMES.DARK ? '◐' : '◑'}
-        </Button>
-      </div>
+      <ThemeToggle theme={theme} onToggle={toggleTheme} />
 
       {timerFinished && isAlarmActive && (
         <div>
