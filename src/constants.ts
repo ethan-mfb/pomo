@@ -1,3 +1,7 @@
 export const DEFAULT_WORK_SESSION_DURATION_MINUTES = 25;
 export const SECONDS_IN_MINUTE = 60;
 export const MILLISECONDS_IN_SECOND = 1000;
+export const THEMES = {
+  DARK: 'dark',
+  LIGHT: 'light',
+} as const;
