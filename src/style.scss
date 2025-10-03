@@ -23,12 +23,13 @@ body {
   font-family: system-ui, sans-serif;
   background: var(--color-primary);
   color: var(--color-fg);
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 .app {
-  padding: 2rem;
-  max-width: 640px;
+  padding: 4rem 2rem 2rem 2rem;
   margin: 0 auto;
   position: relative;
 
@@ -54,28 +55,34 @@ body {
 
   .theme-toggle {
     position: absolute;
-    top: 1rem;
-    right: 1rem;
+    top: 4rem;
+    right: 4rem;
+  }
 
-    .button {
-      width: 3rem;
-      height: 3rem;
-      padding: 0;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.5rem;
-      background: var(--color-secondary);
-      border: 2px solid color-mix(in srgb, var(--color-fg) 10%, transparent);
+  .theme-toggle-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    background: transparent;
+    border: 2px solid color-mix(in srgb, var(--color-fg) 20%, transparent);
+    color: var(--color-fg);
+    text-transform: none;
+    letter-spacing: 0;
 
-      &:hover {
-        transform: rotate(15deg) scale(1.1);
-      }
+    &:hover {
+      transform: rotate(180deg) scale(1.05);
+      background: color-mix(in srgb, var(--color-fg) 5%, transparent);
+      box-shadow: none;
+    }
 
-      &:active {
-        transform: rotate(0deg) scale(0.95);
-      }
+    &:active {
+      transform: rotate(180deg) scale(0.95);
+      box-shadow: none;
     }
   }
 }

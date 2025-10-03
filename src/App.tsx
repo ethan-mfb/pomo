@@ -63,8 +63,8 @@ export function App() {
   return (
     <div className="app">
       <div className="theme-toggle">
-        <Button onClick={toggleTheme}>
-          {theme === 'dark' ? '☀️' : '🌙'}
+        <Button onClick={toggleTheme} className="theme-toggle-btn">
+          {theme === 'dark' ? '◐' : '◑'}
         </Button>
       </div>
 
