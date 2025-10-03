@@ -1,6 +1,4 @@
-$pomo-primary: #183059;
-$pomo-secondary: #fadf63;
-$fg: #f1f5f9;
+@use '../theme';
 
 .number-input {
   display: flex;
@@ -10,31 +8,31 @@ $fg: #f1f5f9;
 
   label {
     font-weight: 600;
-    color: $fg;
+    color: theme.$fg;
     font-size: 1rem;
   }
 
   input[type='number'] {
-    background-color: rgba($fg, 0.1);
-    border: 2px solid rgba($fg, 0.2);
+    background-color: rgba(theme.$fg, 0.1);
+    border: 2px solid rgba(theme.$fg, 0.2);
     border-radius: 4px;
     padding: 0.5rem;
     font-size: 1rem;
-    color: $fg;
+    color: theme.$fg;
     transition: all 0.2s ease;
 
     &::placeholder {
-      color: rgba($fg, 0.5);
+      color: rgba(theme.$fg, 0.5);
     }
 
     &:focus {
       outline: none;
-      border-color: $pomo-secondary;
-      background-color: rgba($fg, 0.15);
+      border-color: theme.$pomo-secondary;
+      background-color: rgba(theme.$fg, 0.15);
     }
 
     &:hover {
-      border-color: rgba($fg, 0.3);
+      border-color: rgba(theme.$fg, 0.3);
     }
   }
 }

@@ -1,13 +1,10 @@
-$pomo-primary: #183059;
-$pomo-secondary: #fadf63;
-$fg: #f1f5f9;
-$fg-muted: #c6ced9;
+@use 'theme';
 
 body {
   margin: 0;
   font-family: system-ui, sans-serif;
-  background: $pomo-primary;
-  color: $fg;
+  background: theme.$pomo-primary;
+  color: theme.$fg;
 }
 
 .app {
@@ -23,7 +20,7 @@ body {
       text-align: center;
     }
     .timer-display-end-time {
-      color: $fg-muted;
+      color: theme.$fg-muted;
       display: block;
       font-size: 0.7em;
     }

@@ -1,10 +1,8 @@
-$pomo-primary: #183059;
-$pomo-secondary: #fadf63;
-$fg: #f1f5f9;
+@use '../theme';
 
 .button {
-  background-color: $pomo-secondary;
-  color: $pomo-primary;
+  background-color: theme.$pomo-secondary;
+  color: theme.$pomo-primary;
   border: none;
   border-radius: 4px;
   padding: 0.5rem 1rem;
@@ -14,7 +12,7 @@ $fg: #f1f5f9;
   transition: all 0.2s ease;
 
   &:hover {
-    background-color: lighten($pomo-secondary, 5%);
+    background-color: lighten(theme.$pomo-secondary, 5%);
     transform: translateY(-1px);
   }
 
@@ -23,6 +21,6 @@ $fg: #f1f5f9;
   }
 
   &:focus {
-    outline: 1px solid $fg;
+    outline: 1px solid theme.$fg;
   }
 }
