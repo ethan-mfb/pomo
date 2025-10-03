@@ -12,26 +12,29 @@ export function App() {
   const { timeRemaining, isRunning, timerFinished, startTimer } = useTimer({
     onFinish: playAlarm,
   });
+  const [hasBeenDismissed, setHasBeenDismissed] = useState(true);
 
   const onStartWorkSession = () => {
+    setHasBeenDismissed(false);
     const totalSeconds = workSessionDurationMinutes * SECONDS_IN_MINUTE;
     dismissAlarm();
     startTimer(totalSeconds);
   };
   const onDismissAlarm = () => {
     dismissAlarm();
+    setHasBeenDismissed(true);
   };
 
   return (
     <div className="app">
       {timerFinished && isAlarmActive && (
         <div>
-          <p>Take 5!</p>
+          <p>Take a break</p>
           <button onClick={onDismissAlarm}>Dismiss Alarm</button>
         </div>
       )}
 
-      {!isRunning && (
+      {!isRunning && hasBeenDismissed && (
         <div>
           <NumberInput
             id="work-duration"
