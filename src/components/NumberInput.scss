@@ -1,0 +1,40 @@
+$pomo-primary: #183059;
+$pomo-secondary: #fadf63;
+$fg: #f1f5f9;
+
+.number-input {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+
+  label {
+    font-weight: 600;
+    color: $fg;
+    font-size: 1rem;
+  }
+
+  input[type='number'] {
+    background-color: rgba($fg, 0.1);
+    border: 2px solid rgba($fg, 0.2);
+    border-radius: 4px;
+    padding: 0.5rem;
+    font-size: 1rem;
+    color: $fg;
+    transition: all 0.2s ease;
+
+    &::placeholder {
+      color: rgba($fg, 0.5);
+    }
+
+    &:focus {
+      outline: none;
+      border-color: $pomo-secondary;
+      background-color: rgba($fg, 0.15);
+    }
+
+    &:hover {
+      border-color: rgba($fg, 0.3);
+    }
+  }
+}

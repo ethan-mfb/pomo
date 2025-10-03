@@ -1,3 +1,5 @@
+import './NumberInput.scss';
+
 export type NumberInputProps = {
   id: string;
   label: string;
