@@ -72,6 +72,7 @@ export function App() {
           <Toggle
             id="alarm-toggle"
             label="Alarm"
+            className="alarm-toggle"
             checked={alarmEnabled}
             onChange={setAlarmEnabled}
           />

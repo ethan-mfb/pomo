@@ -38,7 +38,11 @@ body {
   h1 {
     margin-top: 0;
   }
-
+  .alarm-toggle {
+    .toggle-switch {
+      margin-left: 1em;
+    }
+  }
   .timer-display {
     .timer-display-countdown {
       font-size: 2em;
