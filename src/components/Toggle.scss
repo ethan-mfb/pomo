@@ -1,13 +1,13 @@
 .toggle-container {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-bottom: 1rem;
 
   .toggle-label {
     font-weight: 600;
     color: var(--color-fg);
     font-size: 1rem;
+    cursor: pointer;
   }
 
   .toggle-switch {
