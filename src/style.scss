@@ -7,6 +7,7 @@
   --color-fg-muted: #{theme.$dark-fg-muted};
   --color-accent: #{theme.$dark-secondary};
   --color-button-text: #{theme.$dark-primary};
+  --color-toggle-checked: #{theme.$dark-primary};
 }
 
 body[data-theme='light'] {
@@ -16,6 +17,7 @@ body[data-theme='light'] {
   --color-fg-muted: #{theme.$light-fg-muted};
   --color-accent: #{theme.$light-accent};
   --color-button-text: #{theme.$light-accent};
+  --color-toggle-checked: #{theme.$light-secondary};
 }
 
 body {
