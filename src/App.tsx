@@ -3,6 +3,7 @@ import { NumberInput } from './components/NumberInput.tsx';
 import { ProgressBar } from './components/ProgressBar.tsx';
 import { Button } from './components/Button.tsx';
 import { ThemeToggle } from './components/ThemeToggle.tsx';
+import { Toggle } from './components/Toggle.tsx';
 import {
   DEFAULT_WORK_SESSION_DURATION_MINUTES,
   MILLISECONDS_IN_SECOND,
@@ -15,12 +16,13 @@ import { useAppTheme } from './hooks/useAppTheme.ts';
 
 export function App() {
   const { theme, toggleTheme } = useAppTheme();
+  const [alarmEnabled, setAlarmEnabled] = useState(true);
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
   const [totalDuration, setTotalDuration] = useState(0);
   const [endTime, setEndTime] = useState<Date | null>(null);
-  const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm();
+  const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm({ soundEnabled: alarmEnabled });
   const {
     timeRemaining,
     isRunning,
@@ -67,6 +69,12 @@ export function App() {
 
       {!isRunning && hasBeenDismissed && (
         <div>
+          <Toggle
+            id="alarm-toggle"
+            label="Alarm"
+            checked={alarmEnabled}
+            onChange={setAlarmEnabled}
+          />
           <NumberInput
             id="work-duration"
             label="Work Session Duration (minutes):"
