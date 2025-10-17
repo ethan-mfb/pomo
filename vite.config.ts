@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
 
 export default defineConfig({
+  base: '/pomo/',
   plugins: [
     react(),
     VitePWA({
@@ -10,7 +11,7 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
-      includeAssets: ['robots.txt', 'favicon.svg', 'alarm.mp3'],
+      includeAssets: ['robots.txt', 'favicon.svg'],
       manifest: {
         name: 'Pomo',
         short_name: 'Pomo',
@@ -19,8 +20,8 @@ export default defineConfig({
         background_color: '#0f172a',
         display: 'standalone',
         orientation: 'portrait-primary',
-        scope: '/',
-        start_url: '/',
+        scope: '/pomo/',
+        start_url: '/pomo/',
         icons: [
           {
             src: 'icons/icon-192.png',
