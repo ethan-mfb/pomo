@@ -26,7 +26,7 @@ export function App() {
   const [endTime, setEndTime] = useState<Date | null>(null);
   const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm({
     soundEnabled: alarmEnabled,
-    volume: alarmVolume
+    volume: alarmVolume,
   });
   const {
     timeRemaining,
@@ -66,20 +66,18 @@ export function App() {
   const onAlarmVolumeChange = (value: number) => {
     setAlarmVolume(value);
   };
+  const onToggleAlarmTest = () => {
+    if (isAlarmActive) {
+      dismissAlarm();
+    } else {
+      playAlarm();
+    }
+  };
 
   return (
     <div className="app">
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
       <p>Completed work sessions: {completedWorkSessions}</p>
-      <Slider
-        id="alarm-volume"
-        label="Alarm Volume:"
-        value={alarmVolume}
-        onChange={onAlarmVolumeChange}
-        min={0}
-        max={100}
-        showValue={true}
-      />
 
       {timerFinished && isAlarmActive && (
         <div>
@@ -97,6 +95,16 @@ export function App() {
             checked={alarmEnabled}
             onChange={setAlarmEnabled}
           />
+          <Slider
+            id="alarm-volume"
+            label="Alarm Volume:"
+            value={alarmVolume}
+            onChange={onAlarmVolumeChange}
+            min={0}
+            max={100}
+            showValue={true}
+          />
+          <Button onClick={onToggleAlarmTest}>{isAlarmActive ? 'Stop Test' : 'Test Alarm'}</Button>
           <NumberInput
             id="work-duration"
             label="Work Session Duration (minutes):"
