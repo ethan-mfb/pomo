@@ -119,7 +119,7 @@ export function App() {
                 max={100}
                 showValue={true}
               />
-              <Button onClick={onToggleAlarmTest}>
+              <Button onClick={onToggleAlarmTest} className="alarm-test-button">
                 {isTestingAlarm ? 'Stop Test' : 'Test Alarm'}
               </Button>
             </>
