@@ -18,12 +18,16 @@ import { useAppTheme } from './hooks/useAppTheme.ts';
 export function App() {
   const { theme, toggleTheme } = useAppTheme();
   const [alarmEnabled, setAlarmEnabled] = useState(true);
+  const [alarmVolume, setAlarmVolume] = useState(50);
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
   const [totalDuration, setTotalDuration] = useState(0);
   const [endTime, setEndTime] = useState<Date | null>(null);
-  const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm({ soundEnabled: alarmEnabled });
+  const { playAlarm, dismissAlarm, isAlarmActive } = useAlarm({
+    soundEnabled: alarmEnabled,
+    volume: alarmVolume
+  });
   const {
     timeRemaining,
     isRunning,
@@ -38,7 +42,6 @@ export function App() {
   });
   const [hasBeenDismissed, setHasBeenDismissed] = useState(true);
   const [completedWorkSessions, setCompletedWorkSessions] = useState(0);
-  const [alarmVolume, setAlarmVolume] = useState(50);
 
   const onStartWorkSession = () => {
     setHasBeenDismissed(false);
@@ -62,7 +65,6 @@ export function App() {
 
   const onAlarmVolumeChange = (value: number) => {
     setAlarmVolume(value);
-    // TODO: Implement actual volume adjustment for the alarm sound
   };
 
   return (

@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-export function useAlarm(args: { soundEnabled: boolean }): {
+export function useAlarm(args: { soundEnabled: boolean; volume: number }): {
   isAlarmActive: boolean;
   playAlarm: () => void;
   dismissAlarm: () => void;
 } {
   const audio = useRef<HTMLAudioElement | null>(null);
   const [isAlarmActive, setIsAlarmActive] = useState(false);
-  const { soundEnabled } = args;
+  const { soundEnabled, volume } = args;
 
   const playAlarm = useCallback(() => {
     setIsAlarmActive(true);
@@ -19,12 +19,14 @@ export function useAlarm(args: { soundEnabled: boolean }): {
     // Initialize audio if needed
     if (audio.current === null) {
       audio.current = new Audio('/alarm.mp3');
-      audio.current.volume = 1.0;
       audio.current.loop = false;
     }
 
+    // Set volume (0-100 range converted to 0.0-1.0)
+    audio.current.volume = volume / 100;
+
     audio.current.play().catch(console.error);
-  }, [soundEnabled]);
+  }, [soundEnabled, volume]);
 
   const dismissAlarm = useCallback(() => {
     if (audio.current !== null) {
