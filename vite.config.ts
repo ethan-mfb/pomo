@@ -10,6 +10,7 @@ export default defineConfig({
       devOptions: {
         enabled: true,
       },
+      includeAssets: ['robots.txt', 'favicon.svg', 'alarm.mp3'],
       manifest: {
         name: 'Pomo',
         short_name: 'Pomo',
