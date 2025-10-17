@@ -4,6 +4,7 @@ import { ProgressBar } from './components/ProgressBar.tsx';
 import { Button } from './components/Button.tsx';
 import { ThemeToggle } from './components/ThemeToggle.tsx';
 import { Toggle } from './components/Toggle.tsx';
+import { Slider } from './components/Slider.tsx';
 import {
   DEFAULT_WORK_SESSION_DURATION_MINUTES,
   MILLISECONDS_IN_SECOND,
@@ -37,6 +38,7 @@ export function App() {
   });
   const [hasBeenDismissed, setHasBeenDismissed] = useState(true);
   const [completedWorkSessions, setCompletedWorkSessions] = useState(0);
+  const [alarmVolume, setAlarmVolume] = useState(50);
 
   const onStartWorkSession = () => {
     setHasBeenDismissed(false);
@@ -58,10 +60,24 @@ export function App() {
     setHasBeenDismissed(true);
   };
 
+  const onAlarmVolumeChange = (value: number) => {
+    setAlarmVolume(value);
+    // TODO: Implement actual volume adjustment for the alarm sound
+  };
+
   return (
     <div className="app">
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
       <p>Completed work sessions: {completedWorkSessions}</p>
+      <Slider
+        id="alarm-volume"
+        label="Alarm Volume:"
+        value={alarmVolume}
+        onChange={onAlarmVolumeChange}
+        min={0}
+        max={100}
+        showValue={true}
+      />
 
       {timerFinished && isAlarmActive && (
         <div>
