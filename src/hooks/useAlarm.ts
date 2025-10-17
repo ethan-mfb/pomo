@@ -18,7 +18,8 @@ export function useAlarm(args: { soundEnabled: boolean; volume: number }): {
 
     // Initialize audio if needed
     if (audio.current === null) {
-      audio.current = new Audio('/alarm.mp3');
+      // Use relative path so it works under GitHub Pages base '/pomo/'
+      audio.current = new Audio('alarm.mp3');
       audio.current.loop = false;
     }
 
