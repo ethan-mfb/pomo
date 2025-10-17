@@ -98,18 +98,22 @@ export function App() {
             checked={alarmEnabled}
             onChange={setAlarmEnabled}
           />
-          <Slider
-            id="alarm-volume"
-            label="Alarm Volume:"
-            value={alarmVolume}
-            onChange={onAlarmVolumeChange}
-            min={0}
-            max={100}
-            showValue={true}
-          />
-          <Button onClick={onToggleAlarmTest}>
-            {isTestingAlarm ? 'Stop Test' : 'Test Alarm'}
-          </Button>
+          {alarmEnabled && (
+            <>
+              <Slider
+                id="alarm-volume"
+                label="Alarm Volume:"
+                value={alarmVolume}
+                onChange={onAlarmVolumeChange}
+                min={0}
+                max={100}
+                showValue={true}
+              />
+              <Button onClick={onToggleAlarmTest}>
+                {isTestingAlarm ? 'Stop Test' : 'Test Alarm'}
+              </Button>
+            </>
+          )}
           <NumberInput
             id="work-duration"
             label="Work Session Duration (minutes):"
