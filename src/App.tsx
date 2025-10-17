@@ -67,6 +67,16 @@ export function App() {
   const onAlarmVolumeChange = (value: number) => {
     setAlarmVolume(value);
   };
+
+  const onResumeTimer = () => {
+    // Recalculate endTime based on current remaining time when resuming
+    if (timeRemaining !== null) {
+      const newEndTime = new Date(Date.now() + timeRemaining * MILLISECONDS_IN_SECOND);
+      setEndTime(newEndTime);
+    }
+    resumeTimer();
+  };
+
   const onToggleAlarmTest = () => {
     if (isTestingAlarm) {
       dismissAlarm();
@@ -136,7 +146,7 @@ export function App() {
               </span>
             )}
           </h2>
-          <Button onClick={isPaused ? resumeTimer : pauseTimer}>
+          <Button onClick={isPaused ? onResumeTimer : pauseTimer}>
             {isPaused ? 'Resume' : 'Pause'}
           </Button>
           <Button onClick={onCancelTimer}>Cancel</Button>
