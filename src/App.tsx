@@ -36,6 +36,7 @@ export function App() {
     onFinish: playAlarm,
   });
   const [hasBeenDismissed, setHasBeenDismissed] = useState(true);
+  const [completedWorkSessions, setCompletedWorkSessions] = useState(0);
 
   const onStartWorkSession = () => {
     setHasBeenDismissed(false);
@@ -48,6 +49,7 @@ export function App() {
   const onDismissAlarm = () => {
     dismissAlarm();
     setHasBeenDismissed(true);
+    setCompletedWorkSessions((prev) => prev + 1);
   };
 
   const onCancelTimer = () => {
@@ -59,6 +61,7 @@ export function App() {
   return (
     <div className="app">
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
+      <p>Completed work sessions: {completedWorkSessions}</p>
 
       {timerFinished && isAlarmActive && (
         <div>
