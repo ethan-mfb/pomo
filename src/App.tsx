@@ -42,6 +42,7 @@ export function App() {
   });
   const [hasBeenDismissed, setHasBeenDismissed] = useState(true);
   const [completedWorkSessions, setCompletedWorkSessions] = useState(0);
+  const [isTestingAlarm, setIsTestingAlarm] = useState(false);
 
   const onStartWorkSession = () => {
     setHasBeenDismissed(false);
@@ -67,10 +68,12 @@ export function App() {
     setAlarmVolume(value);
   };
   const onToggleAlarmTest = () => {
-    if (isAlarmActive) {
+    if (isTestingAlarm) {
       dismissAlarm();
+      setIsTestingAlarm(false);
     } else {
       playAlarm();
+      setIsTestingAlarm(true);
     }
   };
 
@@ -79,7 +82,7 @@ export function App() {
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
       <p>Completed work sessions: {completedWorkSessions}</p>
 
-      {timerFinished && isAlarmActive && (
+      {timerFinished && isAlarmActive && !isTestingAlarm && (
         <div>
           <h2>Take a break</h2>
           <Button onClick={onDismissAlarm}>Dismiss Alarm</Button>
@@ -104,7 +107,9 @@ export function App() {
             max={100}
             showValue={true}
           />
-          <Button onClick={onToggleAlarmTest}>{isAlarmActive ? 'Stop Test' : 'Test Alarm'}</Button>
+          <Button onClick={onToggleAlarmTest}>
+            {isTestingAlarm ? 'Stop Test' : 'Test Alarm'}
+          </Button>
           <NumberInput
             id="work-duration"
             label="Work Session Duration (minutes):"
