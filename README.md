@@ -18,3 +18,20 @@ React + TypeScript + Vite Progressive Web App scaffold (Sass styling).
 - React 18 with automatic JSX runtime.
 - Sass (`style.scss`) with variables & nesting.
 - Adjust manifest in `vite.config.ts` as needed.
+
+## Deployment
+
+Hosted via GitHub Pages (project site):
+`https://ethan-mfb.github.io/pomo/`
+
+Changes deploy automatically on pushes to `main` through the workflow `.github/workflows/deploy.yml`.
+
+### Status
+
+![Deploy](https://github.com/ethan-mfb/pomo/actions/workflows/deploy.yml/badge.svg)
+
+### Installing the PWA
+
+1. Visit the URL above.
+2. Use the browser’s install/Add to Home Screen option.
+3. Launch the installed app; updates are pulled automatically (service worker `autoUpdate`).
