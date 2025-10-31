@@ -21,10 +21,9 @@ React + TypeScript + Vite Progressive Web App scaffold (Sass styling).
 
 ## Deployment
 
-Hosted via GitHub Pages (project site):
-`https://ethan-mfb.github.io/pomo/`
+Hosted via GitHub Pages (project site): `https://ethan-mfb.github.io/pomo/`
 
-Changes deploy automatically on pushes to `main` through the workflow `.github/workflows/deploy.yml`.
+Changes deploy automatically on pushes to `main`.
 
 ### Status
 
@@ -47,7 +46,8 @@ This project uses `@mfbtech/changelog-generator` to manage change files and gene
 3. Run `npx ccg change` next to `package.json`.
    - Follow prompts to describe the change and select a version bump (major/minor/patch/none).
 4. Commit the generated change file (stored under a `.change` directory created by the tool).
-5. Open PR and merge.
+5. Run `npx ccg publish -a` next to `package.json` to update the changelog.
+6. Open PR and merge.
 
 ### CI Verification (optional)
 
