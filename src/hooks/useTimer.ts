@@ -50,21 +50,21 @@ export function useTimer(args: { onFinish: () => void }): {
       updateTimeRemaining();
 
       // Check every 100ms for smoother updates and better accuracy
-      interval = setInterval(updateTimeRemaining, 100);
+      interval = window.setInterval(updateTimeRemaining, 100);
     } else if (timeRemaining === 0) {
       setTimeRemaining(null);
       setEndTime(null);
     }
 
     return () => {
-      if (interval) {
-        clearInterval(interval);
+      if (interval !== null) {
+        window.clearInterval(interval);
       }
     };
   }, [onFinish, isPaused, endTime, timeRemaining]);
 
   const startTimer = (durationInSeconds: number) => {
-    const targetEndTime = Date.now() + (durationInSeconds * MILLISECONDS_IN_SECOND);
+    const targetEndTime = Date.now() + durationInSeconds * MILLISECONDS_IN_SECOND;
     setEndTime(targetEndTime);
     setTimeRemaining(durationInSeconds);
     setIsPaused(false);
@@ -82,7 +82,7 @@ export function useTimer(args: { onFinish: () => void }): {
   const resumeTimer = () => {
     if (pausedTimeRemaining !== null) {
       // Calculate new end time based on remaining time when paused
-      const targetEndTime = Date.now() + (pausedTimeRemaining * MILLISECONDS_IN_SECOND);
+      const targetEndTime = Date.now() + pausedTimeRemaining * MILLISECONDS_IN_SECOND;
       setEndTime(targetEndTime);
       setPausedTimeRemaining(null);
     }
