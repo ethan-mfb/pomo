@@ -26,8 +26,14 @@ export default defineConfig({
         // Precache all build assets (default behavior made explicit)
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
 
-        // Navigation requests use NetworkFirst strategy (default)
-        navigateFallback: undefined,
+        // Increase file size limit to allow precaching alarm.mp3 (3.31 MB)
+        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
+
+        // Enable navigation fallback for offline SPA support
+        navigateFallback: 'index.html',
+
+        // Restrict fallback to only URLs under /pomo/ path
+        navigateFallbackAllowlist: [/^\/pomo\//],
 
         // Runtime caching strategies
         runtimeCaching: [
@@ -51,6 +57,18 @@ export default defineConfig({
               cacheName: 'image-cache',
               expiration: {
                 maxEntries: 60,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+              },
+            },
+          },
+          {
+            // Cache audio files with CacheFirst strategy
+            urlPattern: /^https?:.*\.(mp3|wav|ogg)$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'audio-cache',
+              expiration: {
+                maxEntries: 10,
                 maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
               },
             },
