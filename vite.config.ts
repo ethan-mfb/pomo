@@ -22,6 +22,48 @@ export default defineConfig({
         enabled: true,
       },
       includeAssets: ['robots.txt', 'favicon.svg'],
+      workbox: {
+        // Precache all build assets (default behavior made explicit)
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+
+        // Navigation requests use NetworkFirst strategy (default)
+        navigateFallback: undefined,
+
+        // Runtime caching strategies
+        runtimeCaching: [
+          {
+            // Cache JS/CSS with CacheFirst strategy
+            urlPattern: /^https?:.*\.(js|css)$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'static-resources',
+              expiration: {
+                maxEntries: 60,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+              },
+            },
+          },
+          {
+            // Cache images with CacheFirst strategy
+            urlPattern: /^https?:.*\.(png|jpg|jpeg|svg|gif|webp)$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'image-cache',
+              expiration: {
+                maxEntries: 60,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 days
+              },
+            },
+          },
+        ],
+
+        // Clean up outdated caches
+        cleanupOutdatedCaches: true,
+
+        // Skip waiting and activate immediately
+        skipWaiting: true,
+        clientsClaim: true,
+      },
       manifest: {
         name: 'Pomo',
         short_name: 'Pomo',
