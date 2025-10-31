@@ -153,7 +153,7 @@ export function App() {
           <Button onClick={onCancelTimer}>Cancel</Button>
         </div>
       )}
-      <div className="version">v{APP_VERSION}</div>
+      <p className="version">v{APP_VERSION}</p>
     </div>
   );
 }
