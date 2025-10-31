@@ -14,6 +14,7 @@ import { formatTime } from './utils.ts';
 import { useTimer } from './hooks/useTimer.ts';
 import { useAlarm } from './hooks/useAlarm.ts';
 import { useAppTheme } from './hooks/useAppTheme.ts';
+import { APP_VERSION } from './version.ts';
 
 export function App() {
   const { theme, toggleTheme } = useAppTheme();
@@ -152,6 +153,7 @@ export function App() {
           <Button onClick={onCancelTimer}>Cancel</Button>
         </div>
       )}
+      <div className="version">v{APP_VERSION}</div>
     </div>
   );
 }
