@@ -18,6 +18,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      injectRegister: 'inline', // Reduce registration delay for cold start
       devOptions: {
         enabled: true,
       },
@@ -30,10 +31,13 @@ export default defineConfig({
         maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
 
         // Enable navigation fallback for offline SPA support
-        navigateFallback: 'index.html',
+        navigateFallback: '/pomo/index.html',
 
-        // Restrict fallback to only URLs under /pomo/ path
-        navigateFallbackAllowlist: [/^\/pomo\//],
+        // Restrict fallback to /pomo paths (with or without trailing slash)
+        navigateFallbackAllowlist: [/^\/pomo($|\/)/],
+
+        // Enable navigation preload to mitigate activation race
+        navigationPreload: true,
 
         // Runtime caching strategies
         runtimeCaching: [
