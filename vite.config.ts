@@ -23,15 +23,17 @@ export default defineConfig({
         enabled: true,
       },
       includeAssets: ['robots.txt', 'favicon.svg'],
+      includeManifestIcons: true,
       workbox: {
         // Precache all build assets (default behavior made explicit)
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,mp3}'],
 
         // Increase file size limit to allow precaching alarm.mp3 (3.31 MB)
-        maximumFileSizeToCacheInBytes: 10 * 1024 * 1024, // 10 MB
+        maximumFileSizeToCacheInBytes: 15 * 1024 * 1024, // 15 MB
 
         // Enable navigation fallback for offline SPA support
-        navigateFallback: '/pomo/index.html',
+        // Note: Must match the URL in precache manifest (relative to base)
+        navigateFallback: 'index.html',
 
         // Restrict fallback to /pomo paths (with or without trailing slash)
         navigateFallbackAllowlist: [/^\/pomo($|\/)/],
@@ -42,9 +44,9 @@ export default defineConfig({
         // Runtime caching strategies
         runtimeCaching: [
           {
-            // Cache JS/CSS with CacheFirst strategy
+            // Cache JS/CSS
             urlPattern: /^https?:.*\.(js|css)$/i,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'static-resources',
               expiration: {
@@ -54,9 +56,9 @@ export default defineConfig({
             },
           },
           {
-            // Cache images with CacheFirst strategy
+            // Cache images
             urlPattern: /^https?:.*\.(png|jpg|jpeg|svg|gif|webp)$/i,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'image-cache',
               expiration: {
@@ -66,9 +68,9 @@ export default defineConfig({
             },
           },
           {
-            // Cache audio files with CacheFirst strategy
+            // Cache audio files
             urlPattern: /^https?:.*\.(mp3|wav|ogg)$/i,
-            handler: 'CacheFirst',
+            handler: 'StaleWhileRevalidate',
             options: {
               cacheName: 'audio-cache',
               expiration: {
