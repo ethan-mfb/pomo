@@ -10,7 +10,7 @@ React + TypeScript + Vite Progressive Web App scaffold (Sass styling).
 
 ## PWA
 
-`vite-plugin-pwa` is configured with `autoUpdate` and basic manifest. Placeholder icons are empty files; replace with real PNG assets (192x192 & 512x512, plus maskable variants).
+`vite-plugin-pwa` is configured with `autoUpdate` and basic manifest.
 
 ## Notes
 
