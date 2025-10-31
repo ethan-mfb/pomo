@@ -1,0 +1,18 @@
+// Dark theme colors
+$dark-primary: #183059;
+$dark-secondary: #fadf63;
+$dark-fg: #f1f5f9;
+$dark-fg-muted: #c6ced9;
+
+// Light theme colors
+$light-primary: #f1f5f9;
+$light-secondary: #183059;
+$light-fg: #1a1a1a;
+$light-fg-muted: #4a5568;
+$light-accent: #fadf63;
+
+// Default to dark theme
+$pomo-primary: $dark-primary;
+$pomo-secondary: $dark-secondary;
+$fg: $dark-fg;
+$fg-muted: $dark-fg-muted;

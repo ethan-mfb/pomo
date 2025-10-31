@@ -1,0 +1,63 @@
+@use 'theme';
+
+:root {
+  --color-primary: #{theme.$dark-primary};
+  --color-secondary: #{theme.$dark-secondary};
+  --color-fg: #{theme.$dark-fg};
+  --color-fg-muted: #{theme.$dark-fg-muted};
+  --color-accent: #{theme.$dark-secondary};
+  --color-button-text: #{theme.$dark-primary};
+  --color-toggle-checked: #{theme.$dark-primary};
+}
+
+body[data-theme='light'] {
+  --color-primary: #{theme.$light-primary};
+  --color-secondary: #{theme.$light-secondary};
+  --color-fg: #{theme.$light-fg};
+  --color-fg-muted: #{theme.$light-fg-muted};
+  --color-accent: #{theme.$light-accent};
+  --color-button-text: #{theme.$light-accent};
+  --color-toggle-checked: #{theme.$light-secondary};
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: var(--color-primary);
+  color: var(--color-fg);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.app {
+  padding: 2rem;
+  margin: 0 auto;
+
+  h1 {
+    margin-top: 0;
+  }
+  .alarm-toggle {
+    .toggle-switch {
+      margin-left: 1em;
+    }
+  }
+  .alarm-test-button {
+    margin-bottom: 1rem;
+  }
+  .timer-display {
+    .timer-display-countdown {
+      font-size: 2em;
+      text-align: center;
+    }
+    .timer-display-end-time {
+      color: var(--color-fg-muted);
+      display: block;
+      font-size: 0.7em;
+    }
+
+    .button {
+      margin: 0.5rem 0.25rem;
+    }
+  }
+}
