@@ -1,0 +1,9 @@
+{
+  "changes": [
+    {
+      "packageName": "pomo",
+      "comment": "Added the application version",
+      "type": "MINOR"
+    }
+  ]
+}
