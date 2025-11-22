@@ -9,9 +9,16 @@ export type NumberInputProps = {
   max?: number;
   placeholder?: string | number;
   disabled?: boolean;
+  onEnter?: () => void;
 };
 
 export function NumberInput(args: NumberInputProps) {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && args.onEnter) {
+      args.onEnter();
+    }
+  };
+
   return (
     <div className="number-input">
       <label htmlFor={args.id}>{args.label}</label>{' '}
@@ -21,6 +28,7 @@ export function NumberInput(args: NumberInputProps) {
         type="number"
         value={args.value}
         onChange={(e) => args.onChange(Number(e.target.value))}
+        onKeyDown={handleKeyDown}
         min={args.min}
         max={args.max}
         placeholder={args.placeholder?.toString()}
