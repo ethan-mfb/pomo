@@ -149,6 +149,7 @@ export function App() {
             value={workSessionDurationMinutes}
             placeholder={DEFAULT_WORK_SESSION_DURATION_MINUTES}
             onChange={setWorkSessionDurationMinutes}
+            onEnter={onStartWorkSession}
           />
           <Button onClick={onStartWorkSession}>Go!</Button>
         </div>
