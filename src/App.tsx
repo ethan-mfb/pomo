@@ -95,10 +95,21 @@ export function App() {
     setCompletedWorkSessions((prev) => prev + 1);
   };
 
+  const onResetWorkSessionCount = () => {
+    setCompletedWorkSessions(0);
+  };
+
   return (
     <div className="app">
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
-      <p>Completed work sessions: {completedWorkSessions}</p>
+      <div>
+        <p>Completed work sessions: {completedWorkSessions}</p>
+        {!isRunning && hasBeenDismissed && (
+          <Button className="reset-work-session-count-button" onClick={onResetWorkSessionCount}>
+            Reset Count
+          </Button>
+        )}
+      </div>
 
       {timerFinished && isAlarmActive && !isTestingAlarm && (
         <div>
