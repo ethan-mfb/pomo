@@ -91,8 +91,8 @@ export function App() {
   const onFinishWorkSessionEarly = () => {
     cancelTimer();
     setEndTime(null);
-    setHasBeenDismissed(false);
-    playAlarm();
+    setHasBeenDismissed(true);
+    setCompletedWorkSessions((prev) => prev + 1);
   };
 
   return (
