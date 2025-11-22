@@ -1,0 +1,9 @@
+{
+  "changes": [
+    {
+      "packageName": "pomo",
+      "comment": "Added a button to reset the work session count",
+      "type": "MINOR"
+    }
+  ]
+}
