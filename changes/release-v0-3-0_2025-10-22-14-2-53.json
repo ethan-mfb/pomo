@@ -1,0 +1,9 @@
+{
+  "changes": [
+    {
+      "packageName": "pomo",
+      "comment": "Added logic to start the work session when the user presses the enter key",
+      "type": "MINOR"
+    }
+  ]
+}
