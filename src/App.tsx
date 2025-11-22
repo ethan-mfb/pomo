@@ -88,6 +88,13 @@ export function App() {
     }
   };
 
+  const onFinishWorkSessionEarly = () => {
+    cancelTimer();
+    setEndTime(null);
+    setHasBeenDismissed(false);
+    playAlarm();
+  };
+
   return (
     <div className="app">
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
@@ -151,6 +158,7 @@ export function App() {
             {isPaused ? 'Resume' : 'Pause'}
           </Button>
           <Button onClick={onCancelTimer}>Cancel</Button>
+          <Button onClick={onFinishWorkSessionEarly}>Finish Work Session</Button>
         </div>
       )}
       <p className="version">v{APP_VERSION}</p>
