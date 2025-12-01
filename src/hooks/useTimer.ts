@@ -1,12 +1,20 @@
 import { useEffect, useState } from 'react';
 import { MILLISECONDS_IN_SECOND } from '../constants.ts';
 
-export function useTimer(args: { onFinish: () => void }): {
-  /** `null` when the timer is not running. */
-  timeRemaining: number | null;
-  /** `true` when the timer is running and `false` otherwise. */
+const timerRefreshIntervalMs = 100; // Interval for updating the timer display
+
+/**
+ * Custom hook for managing a countdown timer with pause/resume functionality.
+ * Uses absolute timestamps (Date.now()) rather than intervals for accurate timing,
+ * which prevents drift issues that can occur with setInterval-based countdown approaches.
+ */
+export function useTimer(args: {
+  /** Callback invoked when the timer reaches zero */
+  onFinish: () => void;
+}): {
+  /** Time remaining in seconds. `null` when the timer is not running. */
+  secondsRemaining: number | null;
   isRunning: boolean;
-  /** `true` when the timer has finished and `false` otherwise. This will remain `true` until the timer starts again. */
   timerFinished: boolean;
   startTimer: (durationInSeconds: number) => void;
   pauseTimer: () => void;
@@ -14,34 +22,38 @@ export function useTimer(args: { onFinish: () => void }): {
   cancelTimer: () => void;
   isPaused: boolean;
 } {
-  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [secondsRemaining, setSecondsRemaining] = useState<number | null>(null);
   const [timerFinished, setTimerFinished] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
-  const [endTime, setEndTime] = useState<number | null>(null); // Target end time in milliseconds
-  const [pausedTimeRemaining, setPausedTimeRemaining] = useState<number | null>(null); // Remaining seconds when paused
-  const isRunning = timeRemaining !== null && timeRemaining > 0 && !isPaused;
+  const [endTimeMs, setEndTimeMs] = useState<number | null>(null);
+  // used to recalculate endTime on resume
+  const [pausedSecondsRemaining, setPausedSecondsRemaining] = useState<number | null>(null);
+  // Derived state: timer is running only if there's time left and not paused
+  const isRunning = secondsRemaining !== null && secondsRemaining > 0 && !isPaused;
 
   const { onFinish } = args;
+
+  // Main timer effect - handles the countdown logic using interval polling
   useEffect(() => {
     let interval: number | null = null;
-
-    if (!isPaused && endTime !== null) {
+    if (!isPaused && endTimeMs !== null) {
       setTimerFinished(false);
 
+      // Calculates remaining time by comparing current time to target end time
       const updateTimeRemaining = () => {
         const now = Date.now();
-        const remainingMs = endTime - now;
+        const remainingMs = endTimeMs - now;
         // Use Math.ceil to round up - ensures we display 1 second until we've truly passed the end time.
         // This prevents showing 0 seconds before the timer actually completes.
         const remainingSeconds = Math.ceil(remainingMs / MILLISECONDS_IN_SECOND);
 
         if (remainingSeconds <= 0) {
-          setTimeRemaining(0);
-          setEndTime(null);
+          setSecondsRemaining(0);
+          setEndTimeMs(null);
           setTimerFinished(true);
           onFinish();
         } else {
-          setTimeRemaining(remainingSeconds);
+          setSecondsRemaining(remainingSeconds);
         }
       };
 
@@ -49,56 +61,59 @@ export function useTimer(args: { onFinish: () => void }): {
       // Without this, there would be a 100ms wait before the first update, causing a brief stale display.
       updateTimeRemaining();
 
-      // Check every 100ms for smoother updates and better accuracy
-      interval = window.setInterval(updateTimeRemaining, 100);
-    } else if (timeRemaining === 0) {
-      setTimeRemaining(null);
-      setEndTime(null);
+      // refresh the time remaining
+      interval = window.setInterval(updateTimeRemaining, timerRefreshIntervalMs);
+    } else if (secondsRemaining === 0) {
+      // Clean up after timer finishes
+      setSecondsRemaining(null);
+      setEndTimeMs(null);
     }
 
+    // Cleanup interval on unmount or when dependencies change
     return () => {
       if (interval !== null) {
         window.clearInterval(interval);
       }
     };
-  }, [onFinish, isPaused, endTime, timeRemaining]);
+  }, [onFinish, isPaused, endTimeMs, secondsRemaining]);
 
   const startTimer = (durationInSeconds: number) => {
     const targetEndTime = Date.now() + durationInSeconds * MILLISECONDS_IN_SECOND;
-    setEndTime(targetEndTime);
-    setTimeRemaining(durationInSeconds);
+    setEndTimeMs(targetEndTime);
+    setSecondsRemaining(durationInSeconds);
     setIsPaused(false);
-    setPausedTimeRemaining(null);
+    setPausedSecondsRemaining(null);
   };
 
   const pauseTimer = () => {
-    if (timeRemaining !== null) {
-      setPausedTimeRemaining(timeRemaining);
-      setEndTime(null); // Clear end time to stop calculations
+    if (secondsRemaining !== null) {
+      setPausedSecondsRemaining(secondsRemaining);
+      setEndTimeMs(null); // Clear end time to stop calculations
     }
     setIsPaused(true);
   };
 
   const resumeTimer = () => {
-    if (pausedTimeRemaining !== null) {
+    if (pausedSecondsRemaining !== null) {
       // Calculate new end time based on remaining time when paused
-      const targetEndTime = Date.now() + pausedTimeRemaining * MILLISECONDS_IN_SECOND;
-      setEndTime(targetEndTime);
-      setPausedTimeRemaining(null);
+      const targetEndTime = Date.now() + pausedSecondsRemaining * MILLISECONDS_IN_SECOND;
+      setEndTimeMs(targetEndTime);
+      setPausedSecondsRemaining(null);
     }
     setIsPaused(false);
   };
 
+  // Completely resets the timer to its initial inactive state
   const cancelTimer = () => {
-    setTimeRemaining(null);
+    setSecondsRemaining(null);
     setIsPaused(false);
     setTimerFinished(false);
-    setEndTime(null);
-    setPausedTimeRemaining(null);
+    setEndTimeMs(null);
+    setPausedSecondsRemaining(null);
   };
 
   return {
-    timeRemaining,
+    secondsRemaining: secondsRemaining,
     isRunning,
     timerFinished,
     startTimer,

@@ -1,6 +1,15 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 
-export function useAlarm(args: { soundEnabled: boolean; volume: number }): {
+/**
+ * Custom hook for managing alarm sound playback.
+ * Handles playing, pausing, and dismissing an alarm audio notification.
+ */
+export function useAlarm(args: {
+  /** Whether sound playback is enabled */
+  soundEnabled: boolean;
+  /** Volume level (0-100) */
+  volume: number;
+}): {
   isAlarmActive: boolean;
   playAlarm: () => void;
   dismissAlarm: () => void;
@@ -12,11 +21,12 @@ export function useAlarm(args: { soundEnabled: boolean; volume: number }): {
   const playAlarm = useCallback(() => {
     setIsAlarmActive(true);
 
+    // Skip audio playback if sound is disabled (alarm state still updates)
     if (!soundEnabled) {
       return;
     }
 
-    // Initialize audio if needed
+    // Initialize audio if needed (lazy initialization for performance)
     if (audio.current === null) {
       // Use relative path so it works under GitHub Pages base '/pomo/'
       audio.current = new Audio('alarm.mp3');
@@ -29,6 +39,7 @@ export function useAlarm(args: { soundEnabled: boolean; volume: number }): {
     audio.current.play().catch(console.error);
   }, [soundEnabled, volume]);
 
+  // Stops the alarm and resets the audio to the beginning
   const dismissAlarm = useCallback(() => {
     if (audio.current !== null) {
       audio.current.pause();
@@ -37,6 +48,7 @@ export function useAlarm(args: { soundEnabled: boolean; volume: number }): {
     }
   }, []);
 
+  // Cleanup: dismiss the alarm when the component unmounts to prevent orphaned audio
   useEffect(
     function dismissAlarmOnUnmount() {
       return dismissAlarm;

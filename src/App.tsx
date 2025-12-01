@@ -30,7 +30,7 @@ export function App() {
     volume: alarmVolume,
   });
   const {
-    timeRemaining,
+    secondsRemaining,
     isRunning,
     timerFinished,
     startTimer,
@@ -71,8 +71,8 @@ export function App() {
 
   const onResumeTimer = () => {
     // Recalculate endTime based on current remaining time when resuming
-    if (timeRemaining !== null) {
-      const newEndTime = new Date(Date.now() + timeRemaining * MILLISECONDS_IN_SECOND);
+    if (secondsRemaining !== null) {
+      const newEndTime = new Date(Date.now() + secondsRemaining * MILLISECONDS_IN_SECOND);
       setEndTime(newEndTime);
     }
     resumeTimer();
@@ -155,11 +155,11 @@ export function App() {
         </div>
       )}
 
-      {timeRemaining !== null && (
+      {secondsRemaining !== null && (
         <div className="timer-display">
-          <ProgressBar timeRemaining={timeRemaining} totalDuration={totalDuration} />
+          <ProgressBar timeRemaining={secondsRemaining} totalDuration={totalDuration} />
           <h2 className="timer-display-countdown">
-            {formatTime(timeRemaining)}
+            {formatTime(secondsRemaining)}
             {endTime && (
               <span className="timer-display-end-time">
                 {isPaused ? '--:--:-- --' : endTime.toLocaleTimeString()}
