@@ -38,8 +38,9 @@ export default defineConfig({
         // Restrict fallback to /pomo paths (with or without trailing slash)
         navigateFallbackAllowlist: [/^\/pomo($|\/)/],
 
-        // Enable navigation preload to mitigate activation race
-        navigationPreload: true,
+        // Enable navigation preload to mitigate activation race (production only)
+        // Disabled in dev to avoid console warnings about cancelled preload requests
+        navigationPreload: process.env.NODE_ENV === 'production',
 
         // Runtime caching strategies
         runtimeCaching: [
