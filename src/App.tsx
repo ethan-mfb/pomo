@@ -1,16 +1,14 @@
 import { useState } from 'react';
-import { NumberInput } from './components/NumberInput.tsx';
-import { ProgressBar } from './components/ProgressBar.tsx';
-import { Button } from './components/Button.tsx';
 import { ThemeToggle } from './components/ThemeToggle.tsx';
-import { Toggle } from './components/Toggle.tsx';
-import { Slider } from './components/Slider.tsx';
+import { WorkSessionCounter } from './components/WorkSessionCounter.tsx';
+import { AlarmNotification } from './components/AlarmNotification.tsx';
+import { AlarmSettings } from './components/AlarmSettings.tsx';
+import { TimerDisplay } from './components/TimerDisplay.tsx';
 import {
   DEFAULT_WORK_SESSION_DURATION_MINUTES,
   MILLISECONDS_IN_SECOND,
   SECONDS_IN_MINUTE,
 } from './constants.ts';
-import { formatTime } from './utils.ts';
 import { useTimer } from './hooks/useTimer.ts';
 import { useAlarm } from './hooks/useAlarm.ts';
 import { useAppTheme } from './hooks/useAppTheme.ts';
@@ -70,7 +68,6 @@ export function App() {
   };
 
   const onResumeTimer = () => {
-    // Recalculate endTime based on current remaining time when resuming
     if (secondsRemaining !== null) {
       const newEndTime = new Date(Date.now() + secondsRemaining * MILLISECONDS_IN_SECOND);
       setEndTime(newEndTime);
@@ -99,80 +96,48 @@ export function App() {
     setCompletedWorkSessions(0);
   };
 
+  const showIdleState = !isRunning && hasBeenDismissed;
+  const showAlarmNotification = timerFinished && isAlarmActive && !isTestingAlarm;
+
   return (
     <div className="app">
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
-      <div>
-        <p>Completed work sessions: {completedWorkSessions}</p>
-        {!isRunning && hasBeenDismissed && (
-          <Button className="reset-work-session-count-button" onClick={onResetWorkSessionCount}>
-            Reset Count
-          </Button>
-        )}
-      </div>
 
-      {timerFinished && isAlarmActive && !isTestingAlarm && (
-        <div>
-          <h2>Take a break</h2>
-          <Button onClick={onDismissAlarm}>Dismiss Alarm</Button>
-        </div>
-      )}
+      <WorkSessionCounter
+        completedWorkSessions={completedWorkSessions}
+        showResetButton={showIdleState}
+        onResetCount={onResetWorkSessionCount}
+      />
 
-      {!isRunning && hasBeenDismissed && (
-        <div>
-          <Toggle
-            id="alarm-toggle"
-            label="Alarm"
-            className="alarm-toggle"
-            checked={alarmEnabled}
-            onChange={setAlarmEnabled}
-          />
-          {alarmEnabled && (
-            <>
-              <Slider
-                id="alarm-volume"
-                label="Alarm Volume:"
-                value={alarmVolume}
-                onChange={onAlarmVolumeChange}
-                min={0}
-                max={100}
-                showValue={true}
-              />
-              <Button onClick={onToggleAlarmTest} className="alarm-test-button">
-                {isTestingAlarm ? 'Stop Test' : 'Test Alarm'}
-              </Button>
-            </>
-          )}
-          <NumberInput
-            id="work-duration"
-            label="Work Session Duration (minutes):"
-            value={workSessionDurationMinutes}
-            placeholder={DEFAULT_WORK_SESSION_DURATION_MINUTES}
-            onChange={setWorkSessionDurationMinutes}
-            onEnter={onStartWorkSession}
-          />
-          <Button onClick={onStartWorkSession}>Go!</Button>
-        </div>
+      {showAlarmNotification && <AlarmNotification onDismiss={onDismissAlarm} />}
+
+      {showIdleState && (
+        <AlarmSettings
+          alarmEnabled={alarmEnabled}
+          onAlarmEnabledChange={setAlarmEnabled}
+          alarmVolume={alarmVolume}
+          onAlarmVolumeChange={onAlarmVolumeChange}
+          isTestingAlarm={isTestingAlarm}
+          onToggleAlarmTest={onToggleAlarmTest}
+          workSessionDurationMinutes={workSessionDurationMinutes}
+          onWorkSessionDurationChange={setWorkSessionDurationMinutes}
+          onStartWorkSession={onStartWorkSession}
+        />
       )}
 
       {secondsRemaining !== null && (
-        <div className="timer-display">
-          <ProgressBar timeRemaining={secondsRemaining} totalDuration={totalDuration} />
-          <h2 className="timer-display-countdown">
-            {formatTime(secondsRemaining)}
-            {endTime && (
-              <span className="timer-display-end-time">
-                {isPaused ? '--:--:-- --' : endTime.toLocaleTimeString()}
-              </span>
-            )}
-          </h2>
-          <Button onClick={isPaused ? onResumeTimer : pauseTimer}>
-            {isPaused ? 'Resume' : 'Pause'}
-          </Button>
-          <Button onClick={onCancelTimer}>Cancel</Button>
-          <Button onClick={onFinishWorkSessionEarly}>Finish Work Session</Button>
-        </div>
+        <TimerDisplay
+          secondsRemaining={secondsRemaining}
+          totalDuration={totalDuration}
+          endTime={endTime}
+          isPaused={isPaused}
+          onPause={pauseTimer}
+          onResume={onResumeTimer}
+          onCancel={onCancelTimer}
+          onFinishEarly={onFinishWorkSessionEarly}
+        />
       )}
+
       <p className="version">v{APP_VERSION}</p>
     </div>
   );
