@@ -5,3 +5,4 @@ export const THEMES = {
   DARK: 'dark',
   LIGHT: 'light',
 } as const;
+export const DEFAULT_ALARM_VOLUME = 50;

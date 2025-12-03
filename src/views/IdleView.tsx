@@ -6,7 +6,11 @@ import { NumberInput } from '../components/NumberInput.tsx';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { useAppTheme } from '../hooks/useAppTheme.ts';
 import { useAlarm } from '../hooks/useAlarm.ts';
-import { DEFAULT_WORK_SESSION_DURATION_MINUTES, SECONDS_IN_MINUTE } from '../constants.ts';
+import {
+  DEFAULT_ALARM_VOLUME,
+  DEFAULT_WORK_SESSION_DURATION_MINUTES,
+  SECONDS_IN_MINUTE,
+} from '../constants.ts';
 import { APP_VERSION } from '../version.ts';
 
 interface IdleViewProps {
@@ -22,7 +26,7 @@ export function IdleView({
 }: IdleViewProps) {
   const { theme, toggleTheme } = useAppTheme();
   const [alarmEnabled, setAlarmEnabled] = useState(true);
-  const [alarmVolume, setAlarmVolume] = useState(50);
+  const [alarmVolume, setAlarmVolume] = useState(DEFAULT_ALARM_VOLUME);
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
     DEFAULT_WORK_SESSION_DURATION_MINUTES
   );
