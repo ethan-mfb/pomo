@@ -2,26 +2,36 @@ import { useState } from 'react';
 import { IdleView } from './views/IdleView.tsx';
 import { TimerRunningView } from './views/TimerRunningView.tsx';
 import { TimerCompletedView } from './views/TimerCompletedView.tsx';
+import { useAlarm } from './hooks/useAlarm.ts';
 
 type View =
   | { name: 'idle' }
   | { name: 'running'; durationSeconds: number; alarmEnabled: boolean; alarmVolume: number }
-  | { name: 'completed'; alarmEnabled: boolean; alarmVolume: number };
+  | { name: 'completed' };
 
 export function App() {
   const [currentView, setCurrentView] = useState<View>({ name: 'idle' });
   const [completedWorkSessions, setCompletedWorkSessions] = useState(0);
+  const [alarmEnabled, setAlarmEnabled] = useState(true);
+  const [alarmVolume, setAlarmVolume] = useState(50);
+
+  const { playAlarm, dismissAlarm } = useAlarm({
+    soundEnabled: alarmEnabled,
+    volume: alarmVolume,
+  });
 
   const navigateToIdle = () => {
     setCurrentView({ name: 'idle' });
   };
 
   const navigateToRunning = (durationSeconds: number, alarmEnabled: boolean, alarmVolume: number) => {
+    setAlarmEnabled(alarmEnabled);
+    setAlarmVolume(alarmVolume);
     setCurrentView({ name: 'running', durationSeconds, alarmEnabled, alarmVolume });
   };
 
-  const navigateToCompleted = (alarmEnabled: boolean, alarmVolume: number) => {
-    setCurrentView({ name: 'completed', alarmEnabled, alarmVolume });
+  const navigateToCompleted = () => {
+    setCurrentView({ name: 'completed' });
   };
 
   switch (currentView.name) {
@@ -38,8 +48,6 @@ export function App() {
       return (
         <TimerRunningView
           durationSeconds={currentView.durationSeconds}
-          alarmEnabled={currentView.alarmEnabled}
-          alarmVolume={currentView.alarmVolume}
           completedWorkSessions={completedWorkSessions}
           onCancel={navigateToIdle}
           onFinishEarly={() => {
@@ -47,7 +55,8 @@ export function App() {
             navigateToIdle();
           }}
           onTimerComplete={() => {
-            navigateToCompleted(currentView.alarmEnabled, currentView.alarmVolume);
+            playAlarm();
+            navigateToCompleted();
           }}
         />
       );
@@ -55,10 +64,9 @@ export function App() {
     case 'completed':
       return (
         <TimerCompletedView
-          alarmEnabled={currentView.alarmEnabled}
-          alarmVolume={currentView.alarmVolume}
           completedWorkSessions={completedWorkSessions}
           onDismiss={() => {
+            dismissAlarm();
             setCompletedWorkSessions((prev) => prev + 1);
             navigateToIdle();
           }}

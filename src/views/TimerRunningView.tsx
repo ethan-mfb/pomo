@@ -4,15 +4,12 @@ import { ProgressBar } from '../components/ProgressBar.tsx';
 import { ThemeToggle } from '../components/ThemeToggle.tsx';
 import { useAppTheme } from '../hooks/useAppTheme.ts';
 import { useTimer } from '../hooks/useTimer.ts';
-import { useAlarm } from '../hooks/useAlarm.ts';
 import { formatTime } from '../utils.ts';
 import { MILLISECONDS_IN_SECOND } from '../constants.ts';
 import { APP_VERSION } from '../version.ts';
 
 interface TimerRunningViewProps {
   durationSeconds: number;
-  alarmEnabled: boolean;
-  alarmVolume: number;
   completedWorkSessions: number;
   onCancel: () => void;
   onFinishEarly: () => void;
@@ -21,8 +18,6 @@ interface TimerRunningViewProps {
 
 export function TimerRunningView({
   durationSeconds,
-  alarmEnabled,
-  alarmVolume,
   completedWorkSessions,
   onCancel,
   onFinishEarly,
@@ -30,11 +25,6 @@ export function TimerRunningView({
 }: TimerRunningViewProps) {
   const { theme, toggleTheme } = useAppTheme();
   const [endTime, setEndTime] = useState<Date | null>(null);
-
-  const { playAlarm } = useAlarm({
-    soundEnabled: alarmEnabled,
-    volume: alarmVolume,
-  });
 
   const {
     secondsRemaining,
@@ -44,10 +34,7 @@ export function TimerRunningView({
     cancelTimer,
     isPaused,
   } = useTimer({
-    onFinish: () => {
-      playAlarm();
-      onTimerComplete();
-    },
+    onFinish: onTimerComplete,
   });
 
   useEffect(() => {
