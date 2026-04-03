@@ -8,20 +8,9 @@ React + TypeScript + Vite Progressive Web App scaffold (Sass styling).
 - `npm run build` - type check and production build
 - `npm run preview` - locally preview the production build
 
-## PWA
-
-`vite-plugin-pwa` is configured with `autoUpdate` and basic manifest.
-
-## Notes
-
-- Strict TypeScript enabled.
-- React 18 with automatic JSX runtime.
-- Sass (`style.scss`) with variables & nesting.
-- Adjust manifest in `vite.config.ts` as needed.
-
 ## Deployment
 
-Hosted via GitHub Pages (project site): `https://ethan-mfb.github.io/pomo/`
+Hosted via GitHub Pages (project site): [`https://ethan-mfb.github.io/pomo/`](https://ethan-mfb.github.io/pomo/)
 
 Changes deploy automatically on pushes to `main`.
 
