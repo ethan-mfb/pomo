@@ -6,12 +6,13 @@ These instructions guide an AI assistant contributing to this repository. The as
 
 A Pomodoro timer PWA built with:
 
-- React 19 (function components + hooks)
+- React (function components + hooks)
 - TypeScript (strict, NodeNext module resolution, explicit `.tsx` imports allowed)
 - Vite + `@vitejs/plugin-react` + `vite-plugin-pwa`
 - Sass for styling (`style.scss` root file; encourage modularization later)
 - ESLint + Prettier enforced via provided configs
 - Jest for unit and integration tests
+- Playwright for e2e tests
 
 ## Architectural Principles
 
@@ -79,6 +80,10 @@ When adding a new feature:
 ## Tests
 
 Unit test business logic. If the business logic is surrounded by logic that is compositional (function/method calls) then write integration tests.
+
+For every bug, one or more e2e tests must be written to reproduce the bug. Once the e2e test is written then the bug fix can be implemented.
+
+For every feature, one or more e2e tests must be written to test the high level acceptance criteria of the feature. Once the e2e tests are written then the feature can be implemented.
 
 ## Commit Guidance (for generated commit messages)
 
