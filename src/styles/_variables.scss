@@ -1,0 +1,44 @@
+// ─── Color palette ────────────────────────────────────────────────────────────
+$color-bg-dark: #0f172a;
+$color-bg-light: #f8fafc;
+$color-surface-dark: #1e293b;
+$color-surface-light: #ffffff;
+$color-primary: #6366f1; // indigo-500
+$color-primary-hover: #818cf8; // indigo-400
+$color-text-dark: #f1f5f9; // slate-100
+$color-text-light: #0f172a; // slate-900
+$color-muted-dark: #94a3b8; // slate-400
+$color-muted-light: #64748b; // slate-500
+$color-danger: #ef4444; // red-500
+$color-success: #22c55e; // green-500
+
+// ─── Spacing scale ────────────────────────────────────────────────────────────
+$space-xs: 0.25rem; //  4px
+$space-sm: 0.5rem; //  8px
+$space-md: 1rem; // 16px
+$space-lg: 1.5rem; // 24px
+$space-xl: 2rem; // 32px
+$space-2xl: 3rem; // 48px
+
+// ─── Typography ───────────────────────────────────────────────────────────────
+$font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-size-sm: 0.875rem; // 14px
+$font-size-base: 1rem; // 16px
+$font-size-lg: 1.125rem; // 18px
+$font-size-xl: 1.25rem; // 20px
+$font-size-2xl: 1.5rem; // 24px
+$font-size-3xl: 1.875rem; // 30px
+$font-size-display: 4rem; // 64px — timer digits
+
+// ─── Radius & shadows ─────────────────────────────────────────────────────────
+$radius-sm: 0.375rem;
+$radius-md: 0.5rem;
+$radius-lg: 0.75rem;
+$shadow-card: 0 4px 24px rgb(0 0 0 / 0.25);
+
+// ─── Transitions ──────────────────────────────────────────────────────────────
+$transition-fast: 150ms ease;
+$transition-base: 250ms ease;
+
+// ─── Layout ───────────────────────────────────────────────────────────────────
+$max-content-width: 28rem; // 448px — single-column card

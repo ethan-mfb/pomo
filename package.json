@@ -17,6 +17,8 @@
   },
   "devDependencies": {
     "@mfbtech/changelog-generator": "^1.0.1",
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.5.2",
     "@types/react": "^19.2.2",
     "@types/react-dom": "^19.2.2",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
