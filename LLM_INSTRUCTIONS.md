@@ -27,25 +27,25 @@ The user does **not write code directly**. All development tasks — implementin
 
 ### What the AI Can Do
 
-| Task | How to request |
-| ---- | -------------- |
-| Implement a feature | "Add a feature that does X" |
-| Fix a bug | "There's a bug where X happens — fix it" |
-| Write a developer plan | "Make a plan to implement X" or "Make a plan to fix bug X" |
-| Run lint | "Run lint" or "Check for lint errors" |
-| Fix lint errors | "Fix all lint errors" |
-| Run formatter | "Format the code" |
-| Run build / type check | "Build the project" or "Check types" |
-| Run tests | "Run the tests" |
-| Write tests | "Write tests for X" |
-| Commit changes | "Commit the changes" |
-| Create a branch | "Create a branch for X" |
-| Open a pull request | "Open a PR for this" |
-| Review a pull request | "Review PR #N" |
-| Comment on a pull request | "Leave a comment on PR #N saying X" |
-| Resolve PR comments | "Resolve the comments on PR #N" |
-| Update changelog | "Generate the changelog entry for this change" |
-| Publish a release | "Publish the changelog for this release" |
+| Task                      | How to request                                             |
+| ------------------------- | ---------------------------------------------------------- |
+| Implement a feature       | "Add a feature that does X"                                |
+| Fix a bug                 | "There's a bug where X happens — fix it"                   |
+| Write a developer plan    | "Make a plan to implement X" or "Make a plan to fix bug X" |
+| Run lint                  | "Run lint" or "Check for lint errors"                      |
+| Fix lint errors           | "Fix all lint errors"                                      |
+| Run formatter             | "Format the code"                                          |
+| Run build / type check    | "Build the project" or "Check types"                       |
+| Run tests                 | "Run the tests"                                            |
+| Write tests               | "Write tests for X"                                        |
+| Commit changes            | "Commit the changes"                                       |
+| Create a branch           | "Create a branch for X"                                    |
+| Open a pull request       | "Open a PR for this"                                       |
+| Review a pull request     | "Review PR #N"                                             |
+| Comment on a pull request | "Leave a comment on PR #N saying X"                        |
+| Resolve PR comments       | "Resolve the comments on PR #N"                            |
+| Update changelog          | "Generate the changelog entry for this change"             |
+| Publish a release         | "Publish the changelog for this release"                   |
 
 ### Development Loop for Features
 
@@ -128,14 +128,14 @@ Playwright operations available via MCP:
 
 ### Scripts (npm)
 
-| Command | What it does |
-| ------- | ------------ |
-| `npm run dev` | Start local dev server |
-| `npm run build` | Type-check (`tsc -b`) + production build |
-| `npm run preview` | Preview production build locally (port 4173) |
-| `npm run lint` | ESLint check on `.ts` and `.tsx` files |
-| `npm run lint:fix` | ESLint auto-fix |
-| `npm run format` | Prettier auto-format all files |
+| Command            | What it does                                 |
+| ------------------ | -------------------------------------------- |
+| `npm run dev`      | Start local dev server                       |
+| `npm run build`    | Type-check (`tsc -b`) + production build     |
+| `npm run preview`  | Preview production build locally (port 4173) |
+| `npm run lint`     | ESLint check on `.ts` and `.tsx` files       |
+| `npm run lint:fix` | ESLint auto-fix                              |
+| `npm run format`   | Prettier auto-format all files               |
 
 ### Changelog Tool
 
@@ -285,4 +285,4 @@ For every feature, one or more e2e tests must be written to test the high level 
 
 ---
 
-*Update this file whenever the process, tooling, or architecture meaningfully evolves.*
+_Update this file whenever the process, tooling, or architecture meaningfully evolves._

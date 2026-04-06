@@ -18,6 +18,7 @@ Complete workflow: GitHub issue → branch → implement → PR.
 ## Step 1: Clarify (if needed)
 
 Before creating anything, make sure you understand:
+
 - **What** the feature does (user-visible behavior)
 - **Acceptance criteria** — the observable outcomes that confirm it's done
 
@@ -26,6 +27,7 @@ Ask at most one clarifying question if a critical requirement is ambiguous. If t
 ### Is the feature too large?
 
 A feature is too large if any of these are true:
+
 - It touches more than ~4 unrelated files
 - It has more than ~5 independent acceptance criteria
 - It bundles multiple user-visible behaviors that could ship independently
@@ -70,7 +72,9 @@ The slug should be lowercase, hyphen-separated, 3–5 words. Example: for issue 
 Follow this loop exactly (from LLM_INSTRUCTIONS.md):
 
 ### 4a. Plan
+
 Write a brief developer plan:
+
 - **Goal** — what the feature does
 - **Approach** — high-level strategy
 - **Files to change** — which files and what changes
@@ -79,24 +83,31 @@ Write a brief developer plan:
 Share the plan as text in the conversation before writing any code.
 
 ### 4b. Tests first
-Write Playwright e2e tests for each acceptance criterion *before* implementing the feature. Tests should:
+
+Write Playwright e2e tests for each acceptance criterion _before_ implementing the feature. Tests should:
+
 - Build and preview the app locally (`VITE_PWA_DISABLED=true npm run build && npm run preview`)
 - Point at `http://localhost:4173/pomo/`
 - Verify each acceptance criterion
 
 ### 4c. Implement
+
 Write the feature code following the project's architectural principles:
+
 - Keep components small and focused
 - Define types first for non-trivial features
 - Use named exports, explicit `.tsx` imports, BEM class naming
 
 ### 4d. Quality checks
+
 Run all three in sequence:
+
 ```bash
 npm run lint
 npm run format
 npm run build
 ```
+
 Fix any errors before proceeding.
 
 ### 4e. Commit early and often
@@ -109,6 +120,7 @@ Commit and push small, buildable increments as you go — don't accumulate all c
 - After fixing lint/format/build errors
 
 Each commit should leave the codebase in a buildable state (`npm run build` passes). Use conventional commit messages, subject ≤ 72 chars:
+
 ```
 feat: <description>
 test: add e2e tests for <feature>
@@ -116,19 +128,24 @@ refactor: <description>
 ```
 
 Push after each commit:
+
 ```bash
 git push -u origin feature/<N>-<slug>   # first push
 git push                                 # subsequent pushes
 ```
 
 ### 4f. Changelog entry
+
 After the feature is fully implemented, generate the changelog entry:
+
 ```bash
 npx ccg change
 ```
+
 Commit and push the generated change file.
 
 ### 4g. Open a Pull Request
+
 ```bash
 gh pr create \
   --base user/ai/main \
@@ -153,10 +170,10 @@ Return the PR URL to the user.
 
 ## Quick Reference
 
-| Item | Value |
-|------|-------|
-| Repo | `ethan-mfb/pomo` |
-| PR base branch | `user/ai/main` |
+| Item           | Value                      |
+| -------------- | -------------------------- |
+| Repo           | `ethan-mfb/pomo`           |
+| PR base branch | `user/ai/main`             |
 | Branch pattern | `feature/<issue-N>-<slug>` |
-| Assignee | `ethan-mfb` |
-| Feature label | `enhancement` |
+| Assignee       | `ethan-mfb`                |
+| Feature label  | `enhancement`              |

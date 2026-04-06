@@ -46,7 +46,8 @@ Look at the recent commit log to understand the style used in this repo
 that style.
 
 A good commit message:
-- Summarizes *what changed and why* (not just "update files")
+
+- Summarizes _what changed and why_ (not just "update files")
 - Is under 72 characters for the subject line
 - Uses imperative mood: "add", "fix", "remove" — not "added", "fixed"
 
@@ -84,6 +85,7 @@ that before pushing and ask if the user wants a branch instead.
 ## 6. Report back
 
 After pushing, tell the user:
+
 - The commit hash (first 8 chars) and message
 - The branch and remote it was pushed to
 - Any warnings encountered (skipped files, hook failures fixed, etc.)

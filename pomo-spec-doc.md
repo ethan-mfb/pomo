@@ -46,21 +46,21 @@ Pomo is a minimalist Pomodoro-style productivity timer PWA. Users run timed work
 
 ## Features
 
-| Feature | Description |
-| --- | --- |
-| Configurable session duration | Number input, default 25 minutes |
-| Countdown timer | MM:SS display, 100ms update interval, drift-resistant |
-| Wall-clock end time | Shows the time of day when session will end |
-| Progress bar | Visual fill indicator across session duration |
-| Pause / Resume / Cancel | Full timer flow control |
-| Audio alarm | Plays on session completion if enabled |
-| Alarm toggle | Enable or disable alarm |
-| Volume control | Slider 0–100%, adjustable before starting |
-| Test alarm | Preview alarm sound from the setup screen |
-| Dismiss alarm | Button to stop audio after session ends |
-| Session counter | In-memory count of completed sessions |
-| Dark / light theme | Toggle with OS preference detection |
-| PWA | Installable, offline-capable, auto-updating service worker |
+| Feature                       | Description                                                |
+| ----------------------------- | ---------------------------------------------------------- |
+| Configurable session duration | Number input, default 25 minutes                           |
+| Countdown timer               | MM:SS display, 100ms update interval, drift-resistant      |
+| Wall-clock end time           | Shows the time of day when session will end                |
+| Progress bar                  | Visual fill indicator across session duration              |
+| Pause / Resume / Cancel       | Full timer flow control                                    |
+| Audio alarm                   | Plays on session completion if enabled                     |
+| Alarm toggle                  | Enable or disable alarm                                    |
+| Volume control                | Slider 0–100%, adjustable before starting                  |
+| Test alarm                    | Preview alarm sound from the setup screen                  |
+| Dismiss alarm                 | Button to stop audio after session ends                    |
+| Session counter               | In-memory count of completed sessions                      |
+| Dark / light theme            | Toggle with OS preference detection                        |
+| PWA                           | Installable, offline-capable, auto-updating service worker |
 
 ---
 
