@@ -1,0 +1,9 @@
+{
+  "changes": [
+    {
+      "packageName": "pomo",
+      "comment": "App scaffold: entry point, App state machine, SCSS variables, BEM base styles, ESLint flat config migration",
+      "type": "MINOR"
+    }
+  ]
+}
