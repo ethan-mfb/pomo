@@ -5,6 +5,7 @@ import { Button } from './components/Button.tsx';
 import { ThemeToggle } from './components/ThemeToggle.tsx';
 import { Toggle } from './components/Toggle.tsx';
 import { Slider } from './components/Slider.tsx';
+import { TodoList } from './components/TodoList.tsx';
 import {
   DEFAULT_WORK_SESSION_DURATION_MINUTES,
   MILLISECONDS_IN_SECOND,
@@ -14,10 +15,12 @@ import { formatTime } from './utils.ts';
 import { useTimer } from './hooks/useTimer.ts';
 import { useAlarm } from './hooks/useAlarm.ts';
 import { useAppTheme } from './hooks/useAppTheme.ts';
+import { useTodos } from './hooks/useTodos.ts';
 import { APP_VERSION } from './version.ts';
 
 export function App() {
   const { theme, toggleTheme } = useAppTheme();
+  const { todos, addTodo, deleteTodo, toggleTodo, moveTodoUp, moveTodoDown } = useTodos();
   const [alarmEnabled, setAlarmEnabled] = useState(true);
   const [alarmVolume, setAlarmVolume] = useState(50);
   const [workSessionDurationMinutes, setWorkSessionDurationMinutes] = useState(
@@ -88,6 +91,17 @@ export function App() {
     }
   };
 
+  const todoList = (
+    <TodoList
+      todos={todos}
+      onAdd={addTodo}
+      onDelete={deleteTodo}
+      onToggle={toggleTodo}
+      onMoveUp={moveTodoUp}
+      onMoveDown={moveTodoDown}
+    />
+  );
+
   return (
     <div className="app">
       <ThemeToggle theme={theme} onToggle={toggleTheme} />
@@ -133,6 +147,7 @@ export function App() {
             onChange={setWorkSessionDurationMinutes}
           />
           <Button onClick={onStartWorkSession}>Go!</Button>
+          {todoList}
         </div>
       )}
 
@@ -151,6 +166,7 @@ export function App() {
             {isPaused ? 'Resume' : 'Pause'}
           </Button>
           <Button onClick={onCancelTimer}>Cancel</Button>
+          {todoList}
         </div>
       )}
       <p className="version">v{APP_VERSION}</p>

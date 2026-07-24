@@ -30,6 +30,14 @@ describe('App', () => {
     });
   }
 
+  function addTodo(text: string) {
+    const input = screen.getByLabelText(/add a todo/i);
+    fireEvent.change(input, { target: { value: text } });
+    act(() => {
+      fireEvent.submit(input.closest('form') as HTMLFormElement);
+    });
+  }
+
   it('shows the config screen with zero completed sessions on first render', () => {
     render(<App />);
 
@@ -111,6 +119,32 @@ describe('App', () => {
 
     act(() => fireEvent.click(screen.getByRole('button', { name: 'Stop Test' })));
     expect(screen.getByRole('button', { name: 'Test Alarm' })).toBeInTheDocument();
+  });
+
+  it('adds a todo on the config screen (AC1)', () => {
+    render(<App />);
+
+    addTodo('buy milk');
+
+    expect(screen.getByRole('checkbox', { name: 'buy milk' })).toBeInTheDocument();
+  });
+
+  it('keeps the todo list present and editable on the countdown screen (AC5)', () => {
+    render(<App />);
+
+    addTodo('buy milk');
+    startSessionOfMinutes(1);
+
+    // The countdown screen is showing...
+    expect(screen.getByRole('button', { name: 'Pause' })).toBeInTheDocument();
+    // ...and the todo added on the config screen is still there and modifiable.
+    expect(screen.getByRole('checkbox', { name: 'buy milk' })).toBeInTheDocument();
+
+    addTodo('write tests');
+    expect(screen.getByRole('checkbox', { name: 'write tests' })).toBeInTheDocument();
+
+    act(() => fireEvent.click(screen.getByRole('checkbox', { name: 'buy milk' })));
+    expect(screen.getByRole('checkbox', { name: 'buy milk' })).toBeChecked();
   });
 
   it('hides the volume slider and alarm test when the alarm is switched off', () => {
