@@ -2,6 +2,16 @@
 
 All workflows use git worktrees to make changes to source code and do not make changes to source code in the root repository.
 
+## Branching model
+
+`develop` is the default/integration branch; `main` is the production branch.
+Every issue → PR workflow below branches off `develop` and opens its PR **into
+`develop`**. Shipping to production is a separate **release PR from `develop` →
+`main`** (see [Release](#release-develop--main)). Both branches are protected:
+no direct pushes, no force-push or deletion, enforced for admins — all changes
+go through a pull request. See the README for the branch-structure and release
+diagrams.
+
 ## Implement Feature (issue → PR)
 
 ```mermaid
@@ -33,6 +43,12 @@ flowchart LR
     end
     G --> H[Run app]
 ```
+
+## Release (develop → main)
+
+When `develop` is ready to ship, open a release PR from `develop` into `main`.
+Merging it advances `main`, which triggers the deploy workflow and publishes to
+GitHub Pages. See the README for the release diagram.
 
 ## Start E2E (set up, don't run)
 

@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Pomo is a Pomodoro-style productivity timer built as an installable PWA. React 19 + TypeScript (strict) + Vite, styled with Sass. Deployed to GitHub Pages at `https://ethan-mfb.github.io/pomo/`; pushes to `main` trigger `.github/workflows/deploy.yml` automatically.
 
+**Branching model:** `develop` is the default/integration branch — all development PRs target `develop`. `main` is the production branch and only advances via a release PR from `develop` → `main`; merging that release PR is what deploys. Both branches are protected (no direct pushes — every change goes through a PR — no force-push or deletion, enforced for admins too; 0 approvals required so you can self-merge). Never commit directly to either; branch off `develop` and open a PR.
+
 ## Commands
 
 - `npm run dev` — Vite dev server (`--host`); PWA `devOptions` are enabled so the service worker is active in dev.
@@ -51,4 +53,4 @@ Components in `src/components/` are presentational (Button, Slider, Toggle, Numb
 
 ## Changelog & release
 
-Uses `@mfbtech/changelog-generator`. Before opening a PR, run `npx ccg change` to create a change file and pick a version bump; `npx ccg publish --apply` updates `CHANGELOG.md` and bumps `package.json`. Comparison branch is `main` (`.changelog-generator.json`). Commit messages follow conventional prefixes (`feat:`, `fix:`, `refactor:`, `chore:`, `docs:`).
+Uses `@mfbtech/changelog-generator`. Before opening a PR, run `npx ccg change` to create a change file and pick a version bump; `npx ccg publish --apply` updates `CHANGELOG.md` and bumps `package.json`. Comparison branch is `develop` (`.changelog-generator.json`), matching the integration branch development PRs land on. Commit messages follow conventional prefixes (`feat:`, `fix:`, `refactor:`, `chore:`, `docs:`).
