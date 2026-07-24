@@ -26,8 +26,6 @@ export function useTimer(args: { onFinish: () => void }): {
     let interval: number | null = null;
 
     if (!isPaused && endTime !== null) {
-      setTimerFinished(false);
-
       const updateTimeRemaining = () => {
         const now = Date.now();
         const remainingMs = endTime - now;
@@ -36,7 +34,9 @@ export function useTimer(args: { onFinish: () => void }): {
         const remainingSeconds = Math.ceil(remainingMs / MILLISECONDS_IN_SECOND);
 
         if (remainingSeconds <= 0) {
-          setTimeRemaining(0);
+          // Collapse straight to the idle `null` on finish; there is no observable
+          // intermediate 0 state, so no post-finish cleanup pass is needed.
+          setTimeRemaining(null);
           setEndTime(null);
           setTimerFinished(true);
           onFinish();
@@ -51,9 +51,6 @@ export function useTimer(args: { onFinish: () => void }): {
 
       // Check every 100ms for smoother updates and better accuracy
       interval = window.setInterval(updateTimeRemaining, 100);
-    } else if (timeRemaining === 0) {
-      setTimeRemaining(null);
-      setEndTime(null);
     }
 
     return () => {
@@ -61,7 +58,7 @@ export function useTimer(args: { onFinish: () => void }): {
         window.clearInterval(interval);
       }
     };
-  }, [onFinish, isPaused, endTime, timeRemaining]);
+  }, [onFinish, isPaused, endTime]);
 
   const startTimer = (durationInSeconds: number) => {
     const targetEndTime = Date.now() + durationInSeconds * MILLISECONDS_IN_SECOND;
@@ -69,6 +66,7 @@ export function useTimer(args: { onFinish: () => void }): {
     setTimeRemaining(durationInSeconds);
     setIsPaused(false);
     setPausedTimeRemaining(null);
+    setTimerFinished(false);
   };
 
   const pauseTimer = () => {
@@ -85,6 +83,7 @@ export function useTimer(args: { onFinish: () => void }): {
       const targetEndTime = Date.now() + pausedTimeRemaining * MILLISECONDS_IN_SECOND;
       setEndTime(targetEndTime);
       setPausedTimeRemaining(null);
+      setTimerFinished(false);
     }
     setIsPaused(false);
   };
