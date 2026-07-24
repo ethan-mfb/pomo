@@ -15,3 +15,19 @@ flowchart LR
     end
     H --> I[Run app]
 ```
+
+## Bugfix (issue → PR)
+
+```mermaid
+flowchart LR
+    A[GitHub issue] --> B[Reproduce]
+    subgraph AI
+        B[Reproduce] --> C[Plan]
+        C --> D["Write test(s)"]
+        D --> E[Implement]
+        E --> F{"Test(s) pass?"}
+        F -->|No| E
+        F -->|Yes| G[Open pull request]
+    end
+    G --> H[Run app]
+```
