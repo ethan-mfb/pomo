@@ -7,9 +7,11 @@ flowchart LR
     A[GitHub issue] --> B[Gather ACs]
     subgraph AI
         B[Gather ACs] --> C[Plan]
-        C --> D[Write tests]
+        C --> D["Write test(s)"]
         D --> F[Implement]
-        F --> H[Open pull request]
+        F --> V{"Test(s) pass?"}
+        V -->|No| F
+        V -->|Yes| H[Open pull request]
     end
-    H --> I[Run app for review]
+    H --> I[Run app]
 ```
