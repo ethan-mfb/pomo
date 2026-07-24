@@ -14,7 +14,6 @@ maps onto a Scrum event or artifact:
 | Product Backlog / Product Goal | GitHub issues, ordered; the pomo product vision |
 | Sprint Planning (Why/What/How) | the **Plan** step + confirmation gate in each workflow |
 | Increment + Definition of Done | a PR into `develop` that passes tests, lint, and build |
-| Daily Scrum | the **`Implement ↺ Test(s) pass?`** re-planning loop |
 | Sprint Review | opening the PR + **running the app** for live review |
 | Sprint (cadence) → production | integration on `develop`; **Release** ships `develop → main` |
 | Product Owner / Developers / Scrum Master | the human / the agentic layer / the enforced guardrails |
