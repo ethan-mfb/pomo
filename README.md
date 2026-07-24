@@ -23,7 +23,17 @@ React + TypeScript + Vite Progressive Web App scaffold (Sass styling).
 
 Hosted via GitHub Pages (project site): `https://ethan-mfb.github.io/pomo/`
 
-Changes deploy automatically on pushes to `main`.
+Changes deploy automatically on pushes to `main` (or via a manual **Run workflow**), driven by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). The workflow uses the modern Pages-via-Actions flow — publishing a build artifact — rather than a `gh-pages` branch.
+
+### How it works
+
+1. **Trigger** — a push to `main` (or `workflow_dispatch`). A `pages` concurrency group with `cancel-in-progress` means a newer push cancels any in-flight deploy.
+2. **`build` job** — checks out the repo, sets up Node 20 with npm caching, runs `npm ci` then `npm run build`. Because `build` is `tsc -b && vite build`, a type error fails the deploy. The resulting `dist/` is uploaded via `actions/upload-pages-artifact`.
+3. **`deploy` job** — depends on `build` and publishes the artifact to the `github-pages` environment with `actions/deploy-pages`.
+
+Because the site is served from the `/pomo/` subpath, `base: '/pomo/'` in `vite.config.ts` makes Vite emit asset URLs relative to that base (also why `useAlarm` loads `'alarm.mp3'` and the PWA `scope`/`start_url` are `/pomo/`).
+
+> **Note:** this deploy workflow is independent of CI. The test suite runs in a separate workflow (`.github/workflows/ci.yml`); `deploy.yml` does not depend on it, so a push to `main` deploys without gating on tests passing.
 
 ### Status
 
