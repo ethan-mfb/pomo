@@ -84,4 +84,14 @@ describe('TodoList', () => {
     await userEvent.click(screen.getByRole('button', { name: /move second down/i }));
     expect(props.onMoveDown).toHaveBeenCalledWith('2');
   });
+
+  it('renders the row action buttons with SVG icons, not text glyphs', () => {
+    render(<TodoList {...noopProps()} />);
+
+    for (const name of [/move first down/i, /delete first/i]) {
+      const button = screen.getByRole('button', { name });
+      expect(button.querySelector('svg')).toBeInTheDocument();
+      expect(button).toHaveTextContent('');
+    }
+  });
 });

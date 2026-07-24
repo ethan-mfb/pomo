@@ -2,6 +2,46 @@ import { useState } from 'react';
 import type { Todo } from '../types.ts';
 import './TodoList.scss';
 
+// Presentational icons for the row action buttons. Each button carries its own
+// aria-label, so the SVGs are decorative (aria-hidden) and inherit the button's
+// text color via `currentColor`.
+const iconProps = {
+  width: 16,
+  height: 16,
+  viewBox: '0 0 16 16',
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 2,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+  'aria-hidden': true,
+  focusable: false,
+};
+
+function ChevronUpIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M4 10l4-4 4 4" />
+    </svg>
+  );
+}
+
+function ChevronDownIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M4 6l4 4 4-4" />
+    </svg>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg {...iconProps}>
+      <path d="M4 4l8 8M12 4l-8 8" />
+    </svg>
+  );
+}
+
 export type TodoListProps = {
   todos: Todo[];
   onAdd: (text: string) => void;
@@ -63,7 +103,7 @@ export function TodoList({ todos, onAdd, onDelete, onToggle, onMoveUp, onMoveDow
                 disabled={index === 0}
                 onClick={() => onMoveUp(todo.id)}
               >
-                ↑
+                <ChevronUpIcon />
               </button>
               <button
                 className="button"
@@ -72,7 +112,7 @@ export function TodoList({ todos, onAdd, onDelete, onToggle, onMoveUp, onMoveDow
                 disabled={index === todos.length - 1}
                 onClick={() => onMoveDown(todo.id)}
               >
-                ↓
+                <ChevronDownIcon />
               </button>
               <button
                 className="button"
@@ -80,7 +120,7 @@ export function TodoList({ todos, onAdd, onDelete, onToggle, onMoveUp, onMoveDow
                 aria-label={`Delete ${todo.text}`}
                 onClick={() => onDelete(todo.id)}
               >
-                ✕
+                <CloseIcon />
               </button>
             </div>
           </li>
