@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Pomo is a Pomodoro-style productivity timer built as an installable PWA. React 19 + TypeScript (strict) + Vite, styled with Sass. Deployed to GitHub Pages at `https://ethan-mfb.github.io/pomo/`; pushes to `main` trigger `.github/workflows/deploy.yml` automatically.
 
-**Branching model:** `develop` is the default/integration branch — all development PRs target `develop`. `main` is the production branch and only advances via a release PR from `develop` → `main`; merging that release PR is what deploys. Both branches are protected (no direct pushes — every change goes through a PR — no force-push or deletion, enforced for admins too; 0 approvals required so you can self-merge). Never commit directly to either; branch off `develop` and open a PR.
+**Branching model:** `develop` is the default/integration branch — day-to-day development lands here. `develop` **allows direct pushes** (force-pushes and deletion are still blocked for everyone, including admins), so routine changes can be committed straight to it; larger or riskier work can still use a feature/fix branch and a PR into `develop`. `main` is the production branch and is **protected — no direct pushes**: every change goes through a PR, force-push/deletion disabled and enforced for admins too (0 approvals required so you can self-merge). `main` only advances via a release PR from `develop` → `main`; merging that release PR is what deploys. **Never push directly to `main`.**
 
 ## Commands
 

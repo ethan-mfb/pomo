@@ -24,7 +24,8 @@ React + TypeScript + Vite Progressive Web App scaffold (Sass styling).
 Two long-lived branches:
 
 - **`develop`** — the default/integration branch. All day-to-day development
-  lands here: create a feature/fix branch, then open a PR **into `develop`**.
+  lands here. You can **push directly to `develop`**, or create a feature/fix
+  branch and open a PR **into `develop`** for review.
 - **`main`** — the production branch. It only receives changes via a **release
   PR from `develop` → `main`**, and a push to `main` is what deploys to
   production.
@@ -36,9 +37,10 @@ flowchart LR
     M -->|auto-deploy| P([GitHub Pages])
 ```
 
-Both branches are protected: direct pushes are blocked (all changes go through a
-pull request), force-pushes and deletion are disabled, and the rules apply to
-admins too. Approvals are not required, so you can merge your own PRs.
+`main` is protected: direct pushes are blocked (it only advances via a release
+PR), and force-pushes and deletion are disabled — enforced for admins too.
+`develop` allows direct pushes but still blocks force-pushes and deletion.
+Approvals are not required, so you can merge your own PRs.
 
 ## Deployment
 
