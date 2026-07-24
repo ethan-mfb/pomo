@@ -23,7 +23,7 @@ flowchart LR
     A[GitHub issue] --> B[Reproduce]
     subgraph AI
         B[Reproduce] --> C[Plan]
-        C --> D["Write test(s)"]
+        C --> D["Write e2e test(s)"]
         D --> E[Implement]
         E --> F{"Test(s) pass?"}
         F -->|No| E
