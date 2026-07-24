@@ -3,10 +3,12 @@
 ## Implement Feature (issue → PR)
 
 ```mermaid
-flowchart TD
+flowchart LR
     A[GitHub issue] --> B[Gather ACs]
-    B --> C[Plan]
-    C --> F[Implement]
-    F --> H[Open pull request]
+    subgraph AI
+        B[Gather ACs] --> C[Plan]
+        C --> F[Implement]
+        F --> H[Open pull request]
+    end
     H --> I[Run app for review]
 ```
