@@ -15,7 +15,7 @@ React + TypeScript + Vite Progressive Web App scaffold (Sass styling).
 ## Notes
 
 - Strict TypeScript enabled.
-- React 18 with automatic JSX runtime.
+- React 19 with automatic JSX runtime.
 - Sass (`style.scss`) with variables & nesting.
 - Adjust manifest in `vite.config.ts` as needed.
 
@@ -42,7 +42,7 @@ admins too. Approvals are not required, so you can merge your own PRs.
 
 ## Deployment
 
-Hosted via GitHub Pages (project site): `https://ethan-mfb.github.io/pomo/`
+Hosted via GitHub Pages (project site): <https://ethan-mfb.github.io/pomo/>
 
 Production deploys happen automatically on pushes to `main` (or via a manual
 **Run workflow**), driven by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).

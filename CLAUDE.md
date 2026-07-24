@@ -28,7 +28,7 @@ Pomo is a Pomodoro-style productivity timer built as an installable PWA. React 1
 - Strict TypeScript; avoid `any` and broad `eslint-disable`. Use scoped `// eslint-disable-next-line <rule>` with a reason if truly needed.
 - Magic numbers for time live in `src/constants.ts` (`SECONDS_IN_MINUTE`, `MILLISECONDS_IN_SECOND`, etc.) — reuse them.
 
-`LLM_INSTRUCTIONS.md` holds the fuller style/architecture rationale. Note it and `README.md` say "React 18"; the project is actually on **React 19** (`package.json`) — trust `package.json`.
+`LLM_INSTRUCTIONS.md` holds the fuller style/architecture rationale. For versions, trust `package.json` as the source of truth (the project is on **React 19**).
 
 ## Architecture
 
