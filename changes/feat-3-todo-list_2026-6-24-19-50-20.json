@@ -1,0 +1,9 @@
+{
+  "changes": [
+    {
+      "packageName": "pomo",
+      "comment": "Add a todo list: add, complete, delete, and reorder todos on both the config and countdown screens",
+      "type": "MINOR"
+    }
+  ]
+}
