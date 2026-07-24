@@ -53,4 +53,4 @@ Components in `src/components/` are presentational (Button, Slider, Toggle, Numb
 
 ## Changelog & release
 
-Uses `@mfbtech/changelog-generator`. Before opening a PR, run `npx ccg change` to create a change file and pick a version bump; `npx ccg publish --apply` updates `CHANGELOG.md` and bumps `package.json`. Comparison branch is `develop` (`.changelog-generator.json`), matching the integration branch development PRs land on. Commit messages follow conventional prefixes (`feat:`, `fix:`, `refactor:`, `chore:`, `docs:`).
+Uses `@mfbtech/changelog-generator`. On each development PR into `develop`, run `npx ccg change` to add a change file and pick the version bump, and commit it — **do not publish**. At **release time** (the `develop` → `main` PR), run `npx ccg publish --apply` to compile all accumulated change files into `CHANGELOG.md` and bump `package.json`. Comparison branch is `develop` (`.changelog-generator.json`), matching the integration branch development PRs land on. Commit messages follow conventional prefixes (`feat:`, `fix:`, `refactor:`, `chore:`, `docs:`).

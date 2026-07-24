@@ -46,9 +46,21 @@ flowchart LR
 
 ## Release (develop → main)
 
-When `develop` is ready to ship, open a release PR from `develop` into `main`.
-Merging it advances `main`, which triggers the deploy workflow and publishes to
-GitHub Pages. See the README for the release diagram.
+When `develop` is ready to ship:
+
+1. **Compile the changelog.** On a branch off `develop`, run
+   `npx ccg publish --apply` to fold every change file accumulated on `develop`
+   into `CHANGELOG.md` and bump the version in `package.json`. Commit the result
+   and merge it into `develop` via PR (both branches are protected — no direct
+   pushes).
+2. **Open the release PR** from `develop` into `main` and merge it. Merging
+   advances `main`, which triggers the deploy workflow and publishes to GitHub
+   Pages.
+
+Change files are created per development PR (`npx ccg change`) but are **not**
+published then — `ccg publish` runs only here, at release, so all changes since
+the last release land in the changelog together. See the README for the release
+diagram.
 
 ## Start E2E (set up, don't run)
 

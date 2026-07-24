@@ -82,26 +82,28 @@ This project uses `@mfbtech/changelog-generator` to manage change files and gene
 3. Run `npx ccg change` next to `package.json`.
    - Follow prompts to describe the change and select a version bump (major/minor/patch/none).
 4. Commit the generated change file (stored under a `.change` directory created by the tool).
-5. Run `npx ccg publish -a` next to `package.json` to update the changelog.
-6. Open a PR into `develop` and merge. Releasing to production is a separate PR from `develop` → `main`.
+5. Open a PR into `develop` and merge. Do **not** run `ccg publish` here — change files accumulate on `develop` and are compiled into the changelog at release time (see [Releasing](#releasing-develop--main)).
 
 ### CI Verification (optional)
 
 Run `npx ccg change --verify` in CI to ensure a change file exists for modified code.
 
-### Publishing
+### Releasing (develop → main)
 
-To update the `CHANGELOG.md` and bump the version in `package.json`, run:
+A release compiles every change file accumulated on `develop` into
+`CHANGELOG.md`, bumps the version, and ships `main`:
 
-```bash
-npx ccg publish --apply
-```
+1. On a branch off `develop`, compile the changelog and bump `package.json`:
 
-For a dry-run (no file modifications) use:
+   ```bash
+   npx ccg publish --apply
+   ```
 
-```bash
-npx ccg publish
-```
+   Commit the result and merge it into `develop` via PR (both branches are
+   protected, so it can't be pushed directly). For a dry run first (no file
+   modifications), use `npx ccg publish`.
+2. Open the release PR from `develop` → `main` and merge it. Merging advances
+   `main`, which triggers the deploy workflow and publishes to GitHub Pages.
 
 ### Additional Notes (Changelog System)
 
