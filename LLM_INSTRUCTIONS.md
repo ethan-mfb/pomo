@@ -6,7 +6,7 @@ These instructions guide an AI assistant contributing to this repository. The as
 
 A Pomodoro timer PWA built with:
 
-- React 18 (function components + hooks)
+- React 19 (function components + hooks)
 - TypeScript (strict, NodeNext module resolution, explicit `.tsx` imports allowed)
 - Vite + `@vitejs/plugin-react` + `vite-plugin-pwa`
 - Sass for styling (`style.scss` root file; encourage modularization later)

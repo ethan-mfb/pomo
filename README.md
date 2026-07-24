@@ -15,15 +15,41 @@ React + TypeScript + Vite Progressive Web App scaffold (Sass styling).
 ## Notes
 
 - Strict TypeScript enabled.
-- React 18 with automatic JSX runtime.
+- React 19 with automatic JSX runtime.
 - Sass (`style.scss`) with variables & nesting.
 - Adjust manifest in `vite.config.ts` as needed.
 
+## Branching model
+
+Two long-lived branches:
+
+- **`develop`** — the default/integration branch. All day-to-day development
+  lands here: create a feature/fix branch, then open a PR **into `develop`**.
+- **`main`** — the production branch. It only receives changes via a **release
+  PR from `develop` → `main`**, and a push to `main` is what deploys to
+  production.
+
+```mermaid
+flowchart LR
+    F[feature / fix branch] -->|PR| D[develop]
+    D -->|release PR| M[main]
+    M -->|auto-deploy| P([GitHub Pages])
+```
+
+Both branches are protected: direct pushes are blocked (all changes go through a
+pull request), force-pushes and deletion are disabled, and the rules apply to
+admins too. Approvals are not required, so you can merge your own PRs.
+
 ## Deployment
 
-Hosted via GitHub Pages (project site): `https://ethan-mfb.github.io/pomo/`
+Hosted via GitHub Pages (project site): <https://ethan-mfb.github.io/pomo/>
 
-Changes deploy automatically on pushes to `main` (or via a manual **Run workflow**), driven by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml). The workflow uses the modern Pages-via-Actions flow — publishing a build artifact — rather than a `gh-pages` branch.
+Production deploys happen automatically on pushes to `main` (or via a manual
+**Run workflow**), driven by [`.github/workflows/deploy.yml`](.github/workflows/deploy.yml).
+Under the branching model above, `main` only advances via a release PR from
+`develop`, so **merging that release PR is what ships to production**. The
+workflow uses the modern Pages-via-Actions flow — publishing a build artifact —
+rather than a `gh-pages` branch.
 
 ### How it works
 
@@ -51,34 +77,36 @@ This project uses `@mfbtech/changelog-generator` to manage change files and gene
 
 ### Developer Flow
 
-1. Create a feature/fix branch.
+1. Create a feature/fix branch off `develop`.
 2. Implement changes and commit.
 3. Run `npx ccg change` next to `package.json`.
    - Follow prompts to describe the change and select a version bump (major/minor/patch/none).
 4. Commit the generated change file (stored under a `.change` directory created by the tool).
-5. Run `npx ccg publish -a` next to `package.json` to update the changelog.
-6. Open PR and merge.
+5. Open a PR into `develop` and merge. Do **not** run `ccg publish` here — change files accumulate on `develop` and are compiled into the changelog at release time (see [Releasing](#releasing-develop--main)).
 
 ### CI Verification (optional)
 
 Run `npx ccg change --verify` in CI to ensure a change file exists for modified code.
 
-### Publishing
+### Releasing (develop → main)
 
-To update the `CHANGELOG.md` and bump the version in `package.json`, run:
+A release compiles every change file accumulated on `develop` into
+`CHANGELOG.md`, bumps the version, and ships `main`:
 
-```bash
-npx ccg publish --apply
-```
+1. On a branch off `develop`, compile the changelog and bump `package.json`:
 
-For a dry-run (no file modifications) use:
+   ```bash
+   npx ccg publish --apply
+   ```
 
-```bash
-npx ccg publish
-```
+   Commit the result and merge it into `develop` via PR (both branches are
+   protected, so it can't be pushed directly). For a dry run first (no file
+   modifications), use `npx ccg publish`.
+2. Open the release PR from `develop` → `main` and merge it. Merging advances
+   `main`, which triggers the deploy workflow and publishes to GitHub Pages.
 
 ### Additional Notes (Changelog System)
 
-- Default comparison branch is `main` (configured in `.changelog-generator.json`). Adjust if your primary development branch differs.
+- Default comparison branch is `develop` (configured in `.changelog-generator.json`), matching the integration branch where development PRs land.
 - If you accidentally pick the wrong bump type, edit or delete the specific change file before publishing.
 - Empty or trivial changes can use bump `none`; they will appear without version impact.

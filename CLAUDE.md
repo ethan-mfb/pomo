@@ -6,6 +6,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Pomo is a Pomodoro-style productivity timer built as an installable PWA. React 19 + TypeScript (strict) + Vite, styled with Sass. Deployed to GitHub Pages at `https://ethan-mfb.github.io/pomo/`; pushes to `main` trigger `.github/workflows/deploy.yml` automatically.
 
+**Branching model:** `develop` is the default/integration branch — all development PRs target `develop`. `main` is the production branch and only advances via a release PR from `develop` → `main`; merging that release PR is what deploys. Both branches are protected (no direct pushes — every change goes through a PR — no force-push or deletion, enforced for admins too; 0 approvals required so you can self-merge). Never commit directly to either; branch off `develop` and open a PR.
+
 ## Commands
 
 - `npm run dev` — Vite dev server (`--host`); PWA `devOptions` are enabled so the service worker is active in dev.
@@ -26,7 +28,7 @@ Pomo is a Pomodoro-style productivity timer built as an installable PWA. React 1
 - Strict TypeScript; avoid `any` and broad `eslint-disable`. Use scoped `// eslint-disable-next-line <rule>` with a reason if truly needed.
 - Magic numbers for time live in `src/constants.ts` (`SECONDS_IN_MINUTE`, `MILLISECONDS_IN_SECOND`, etc.) — reuse them.
 
-`LLM_INSTRUCTIONS.md` holds the fuller style/architecture rationale. Note it and `README.md` say "React 18"; the project is actually on **React 19** (`package.json`) — trust `package.json`.
+`LLM_INSTRUCTIONS.md` holds the fuller style/architecture rationale. For versions, trust `package.json` as the source of truth (the project is on **React 19**).
 
 ## Architecture
 
@@ -51,4 +53,4 @@ Components in `src/components/` are presentational (Button, Slider, Toggle, Numb
 
 ## Changelog & release
 
-Uses `@mfbtech/changelog-generator`. Before opening a PR, run `npx ccg change` to create a change file and pick a version bump; `npx ccg publish --apply` updates `CHANGELOG.md` and bumps `package.json`. Comparison branch is `main` (`.changelog-generator.json`). Commit messages follow conventional prefixes (`feat:`, `fix:`, `refactor:`, `chore:`, `docs:`).
+Uses `@mfbtech/changelog-generator`. On each development PR into `develop`, run `npx ccg change` to add a change file and pick the version bump, and commit it — **do not publish**. At **release time** (the `develop` → `main` PR), run `npx ccg publish --apply` to compile all accumulated change files into `CHANGELOG.md` and bump `package.json`. Comparison branch is `develop` (`.changelog-generator.json`), matching the integration branch development PRs land on. Commit messages follow conventional prefixes (`feat:`, `fix:`, `refactor:`, `chore:`, `docs:`).
