@@ -13,8 +13,10 @@ Pomo is a Pomodoro-style productivity timer built as an installable PWA. React 1
 - `npm run preview` — serve the production build locally.
 - `npm run lint` / `npm run lint:fix` — ESLint over `.ts,.tsx`.
 - `npm run format` — Prettier write.
+- `npm test` — Vitest (unit/component tests) once; `npm run test:watch` / `npm run test:coverage` for watch and coverage.
+- `npm run test:e2e` — Playwright end-to-end tests. Builds first, then Playwright's `webServer` serves the build via `vite preview` on port 4173 (base `/pomo/`). `npm run test:e2e:ui` for the interactive runner; `npm run test:e2e:report` opens the last HTML report. Requires `npx playwright install chromium` once locally.
 
-There is **no test harness** yet — `npm test` does not exist. Do not claim tests pass; verify via `npm run build` and manual dev runs.
+**Testing layout:** unit/component tests live beside sources as `src/**/*.test.{ts,tsx}` (jsdom, `vitest.config.ts`). E2E specs live in `e2e/*.spec.ts` (`playwright.config.ts`) and drive the real built app in Chromium. CI runs both via `.github/workflows/ci.yml`.
 
 ## Conventions (enforced, not aspirational)
 
