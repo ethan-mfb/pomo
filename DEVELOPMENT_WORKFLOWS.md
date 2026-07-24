@@ -19,7 +19,8 @@ flowchart LR
     A[GitHub issue] --> B[Gather ACs]
     subgraph AI
         B[Gather ACs] --> C[Plan]
-        C --> D["Write test(s)"]
+        C --> M[Mark issue active]
+        M --> D["Write test(s)"]
         D --> F[Implement]
         F --> V{"Test(s) pass?"}
         V -->|No| F
@@ -35,7 +36,8 @@ flowchart LR
     A[GitHub issue] --> B[Reproduce]
     subgraph AI
         B[Reproduce] --> C[Plan]
-        C --> D["Write e2e test(s)"]
+        C --> M[Mark issue active]
+        M --> D["Write e2e test(s)"]
         D --> E[Implement]
         E --> F{"Test(s) pass?"}
         F -->|No| E
